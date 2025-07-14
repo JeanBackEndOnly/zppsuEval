@@ -21,6 +21,7 @@ function getUsersInfo(){
 
     $query = "SELECT * FROM users
     INNER JOIN students ON users.id = students.user_id
+    INNER JOIN department ON students.department_id = department.id
     WHERE users.id = :id;";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(":id", $users_id);
@@ -296,4 +297,24 @@ if (!empty($subjects)) {
 //         'department' => $department
 //     ];
 // }
+function getProfActiveEval(){
+    $pdo = db_connect();
+    $usersID = $_SESSION['user_id'] ?? 'asdasd';
+    $query = "SELECT department_id  FROM students WHERE user_id  = :user_id ;";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':user_id', $usersID);
+    $stmt->execute();
+    $departmentID = $stmt->fetch(PDO::FETCH_ASSOC);
+    $getDeptId = $departmentID["department_id"];
+
+    $query = "SELECT * FROM school_year_semester 
+    INNER JOIN professor_school_year_semester ON school_year_semester.id = professor_school_year_semester.school_year_semester_id
+    INNER JOIN professor ON professor_school_year_semester.professor_id = professor.id
+    WHERE status = 'open' AND department_id = :department_id;";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':department_id', $getDeptId);
+    $stmt->execute();
+    $professor = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return ['professor' => $professor];
+}
 

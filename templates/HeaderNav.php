@@ -21,7 +21,7 @@
             }
         }
         </script>
-            <div class="profileMenu bg-linearOne shadow flex-column rounded-2 w-auto h-auto p-2" id="profileMenu" style="display: none;">
+            <div class="profileMenu bg-linearOne shadow flex-column rounded-2 w-auto h-auto p-2" id="profileMenu" style="display: none; z-index: 5 !important;">
                 <li id="borderBottom" class="m-0 mb-2 mt-1"><a href="settings.php"><p class="m-0"><i class="fa-solid fa-gear"></i>SETTINGS</p></a></li>
                 <li class="m-0 mb-1"><a href="../logout.php" class="m-0" id="l"><p class="m-0"><i class="fa-solid fa-right-from-bracket"></i>LOGOUT</p></a></li>
             </div>
@@ -112,7 +112,7 @@
             }
         }
         </script>
-            <div class="profileMenu bg-linearOne shadow flex-column rounded-2 w-auto h-auto p-2" id="profileMenu" style="display: none;">
+            <div class="profileMenu bg-linearOne shadow flex-column rounded-2 w-auto h-auto p-2" id="profileMenu" style="display: none; z-index: 5 !important;">
                 <li id="borderBottom" class="m-0 mb-2 mt-1"><a href="settings.php"><p class="m-0"><i class="fa-solid fa-gear me-2"></i>SETTINGS</p></a></li>
                 <li class="m-0 mb-1"><a href="../logout.php" class="m-0" id="l"><p class="m-0"><i class="fa-solid fa-right-from-bracket"></i>LOGOUT</p></a></li>
             </div>

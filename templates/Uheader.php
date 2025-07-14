@@ -9,9 +9,13 @@ $getSemester = $info['getSemester'];
 $professortCount = $info['professortCount'];
 $admin_info = $info['admin_info'];
 $resultCount = $info['resultCount'];
-$student_info = $info['student_info'];
-$professortCount = $info['professortCount'];
-$getSemester = $info['getSemester'];
+$subject = $info['subject'];
+$professors = $info['professors'];
+$department = $info['department'];
+$professorInDept = $info['professorInDept'];
+$prof = getProfActiveEval();
+$professor = $prof["professor"];
+$semester = $info['semester'];
 ?>
 <!DOCTYPE html>
 <html lang="en">

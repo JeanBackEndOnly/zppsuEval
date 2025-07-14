@@ -22,7 +22,7 @@
         <div class="col content p-0">
             <div class="containerDashboard w-100">
                 <h3 class="fw-semibold mb-4 ms-3" style="color: #000">
-                    Welcome <span class="text-uppercase"><?php echo htmlspecialchars($student_info["fname"] . " " . $student_info["lname"]); ?>!</span>
+                    Welcome <span class="text-uppercase"><?php echo htmlspecialchars($student_info["lname"] . " " . $student_info["lname"]); ?>!</span>
                 </h3>
 
                 <div class="card shadow-sm border-start border-2 border-info px-1 py-1 ms-3" style="max-width: 500px;">

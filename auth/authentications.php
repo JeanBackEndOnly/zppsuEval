@@ -134,35 +134,49 @@ if (isset($_POST["professorsds"]) && $_POST["professorsds"] === "asdmin") {
     }
 
     if (isset($_FILES["professor_Profile"]) && $_FILES["professor_Profile"]["error"] === 0) {
-        $profile = $_FILES["professor_Profile"];
+                $profile = $_FILES["professor_Profile"];
 
-        if (empty_image($profile)) {
-            $errors["image_Empty"] = "Please insert your profile image!";
-        }
+                if (empty_image($profile)) {
+                    $errors["image_Empty"] = "Please insert your profile image!";
+                }
 
-        if (fileSize_notCompatible($profile)) {
-            $errors["large_File"] = "The image must not exceed 5MB!";
-        }
+                if (fileSize_notCompatible($profile)) {
+                    $errors["large_File"] = "The image must not exceed 5MB!";
+                }
 
-        $allowed_types = ["image/jpeg", "image/jpg", "image/png"];
-        if (image_notCompatible($profile, $allowed_types)) {
-            $errors["file_Types"] = "Only JPG, JPEG, PNG files are allowed.";
-        }
+                $allowed_types = [
+                    "image/jpeg",
+                    "image/jpg",
+                    "image/png"
+                ];
 
-        if (!$errors) {
-            $target_dir = "../assets/image/upload/";
-            $image_file_name = uniqid() . "-" . basename($profile["name"]);
-            $target_file = $target_dir . $image_file_name;
+                if (image_notCompatible($profile, $allowed_types)) {
+                    $errors["file_Types"] = "Only JPG, JPEG, PNG files are allowed.";
+                }
 
-            if (move_uploaded_file($profile["tmp_name"], $target_file)) {
-                $profile = $image_file_name;
+                if (!$errors) {
+                    $target_dir = "../assets/image/uploads/";
+                    $image_file_name = uniqid() . "-" . basename($profile["name"]);
+                    $target_file = $target_dir . $image_file_name;
+
+                    if (move_uploaded_file($profile["tmp_name"], $target_file)) {
+                        $profile = $image_file_name;
+                    } else {
+                        $errors["upload_Error"] = "There was an error uploading your image.";
+                    }
+                }
             } else {
-                $errors["upload_Error"] = "There was an error uploading your image.";
+                $default_image = "../assets/image/users.png";
+                $target_dir = "../assets/image/uploads/";
+                $image_file_name = uniqid() . "-users.png";
+                $target_file = $target_dir . $image_file_name;
+
+                if (copy($default_image, $target_file)) {
+                    $profile = $image_file_name;
+                } else {
+                    $errors["upload_Error"] = "Failed to assign default profile image.";
+                }
             }
-        }
-    } else {
-        $errors["image_file"] = "Please select an image to upload.";
-    }
 
     // if (empty_inputs($teacherID, $Lname, $Fname, $Mname, $email, $prfession)) {
     //     $errors["empty_inputs"] = "Please fill in all fields.";

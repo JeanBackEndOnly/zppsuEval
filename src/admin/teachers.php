@@ -1,74 +1,33 @@
-<?php include_once '../../auth/control.php'; 
-    $info = getUsersInfo();
-    $admin_info = $info['admin_info'];
-    $subject = $info['subject'];
-    $professors = $info['professors'];
-    $department = $info['department'];
-    ?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVALUATEE MANAGEMENT</title>
-    <link rel="stylesheet" href="../../assets/css/hr.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-      @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
-    </style>
-    <script src="../../assets/js/main.js"></script>
-    
-</head>
-<body>
-
- <div class="sideNav">
+<?php include '../../templates/Uheader.php'; include '../../templates/HeaderNav.php'; ?>
+<style>
+    .FacultyNav{
+        background-color: #77070A !important;
+        font-weight: 500;
+    }
+    .CurriculumeNav, .dashboardNav{
+        background: linear-gradient(40deg , #77070b62, #77070A, #77070b62) !important;
+    }
+</style>
+<div class="main w-100 h-100 d-flex flex-column">
+    <?= getAdminHeader() ?>
+    <div class="row w-100 p-0 m-0">
+        <div class="col-auto sideNav bg-linear h-100">
             <div class="sideContents" id="sideContents">
-                <div class="profileBox">
-                <img src="../../assets/image/zppsu-logo.png" alt="pfp" id="pfpOnTop">
-                    <h4>Since 1913</h4>
-                    <p>Zamboanga Peninsula Region IX</p>
-                </div>
-                <div class="menuBox">
-                    <ul>
-                       <a href="dashboard.php" id="dashboard-a"><button id="buttonDashboard"><i class="fa-solid fa-house-user"></i>DASHBOARD</button></a>
-                        <button type="submit" onclick="getHrNavs()">Faculty & Curriculum<i class="fa-solid fa-caret-down" id="iLeft"></i></button>
-                        <ul style="display: none;" id="hrNavs" class="hrNavs">
-                            <a href="teachers.php"><p><i class="fa-solid fa-users"></i>Faculty</p></a>
-                            <a href="subjects.php"><p><i class="fa-solid fa-briefcase"></i>Subjects</p></a>
-                            <a href="departments.php"><p><i class="fa-solid fa-building"></i>Departments</p></a>
-                            <a href="semester.php"><p><i class="fa-solid fa-calendar"></i>Academic Year</p></a>
-                            <a href="yearSection.php"><p><i class="fa-solid fa-building-flag"></i>Year and Section</p></a>
-                            <a href="assignedProf.php"><p><i class="fa-solid fa-users-gear"></i>Faculty Evaluation</p></a>
-                        </ul>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    
-    <div class="columnFlex">
-       <div class="header">
-            <div class="logo" style="display: flex; height: 100%; align-items: center;">
-            <h3 id="userTitle">ZPPSU EVALUATION SYSTEM</h3>
-            </div>
-            <div class="otherButtons">
-                <button type="submit" onclick="profileMenu()" id="buttonpfpmenu">
+                <div class="profileBox w-100 d-flex flex-column justify-content-center align-items-center mt-2 mb-3">
                     <img src="../../assets/image/zppsu-logo.png" alt="pfp" id="pfpOnTop">
-                    <p><?php echo $admin_info["firstname"] ." "; ?><i class="fa-solid fa-caret-down"></i></p>
-                </button>
-                
-                <div class="profileMenu" id="profileMenu" style="display: none;">
-                    <li id="borderBottom"><a href="settings.php"><p><i class="fa-solid fa-gear"></i>SETTINGS</p></a></li>
-                    <li><a href="../logout.php" id="l"><p><i class="fa-solid fa-right-from-bracket"></i>LOGOUT</p></a></li>
+                    <label class="fw-bold text-white"><?= $student_info["SchoolID"] ?></label>
+                    <h5 class="text-white"><?= $student_info["lname"] . ", " . $student_info["fname"]  ?></h5>
                 </div>
+                <?= getAdminNav() ?>
             </div>
         </div>
-        <div class="contentsss">
-           <div class="d-flex justify-content-between align-items-center mb-2" style="margin-top: 1rem; width: 94%;">
-             <li class="list-unstyled m-0">
+
+        <div class="col content p-0 d-flex flex-column align-items-center">
+          <div class="title mt-2 col-md-11 d-flex justify-content-start">
+                <label class="text-black fw-bold fs-2 text-muted">FACULTY MANAGEMENT</label>
+            </div>
+            <div class="d-flex justify-content-between align-items-center col-md-11 mb-2" style="margin-top: 1rem;">
+             <li class="list-unstyled m-0 col-md-8 col-9">
                 <form class="input-group">
                     <input type="text" name="search" id="search" class="form-control" placeholder="Search...">
                     <button class="btn btn-outline-secondary" type="button" id="buttonSearchHehe">
@@ -82,7 +41,7 @@
                 </button>
             </div>
 
-           <div class="table-responsive" style="width: 95%; max-height: 80vh; overflow-y: auto;">
+           <div class="table-responsive rounded-2 col-md-11" style=" max-height: 73vh; overflow-y: auto;">
                 <table class="table table-bordered table-hover align-middle">
                     <thead class="table-dark text-center">
                     <tr>
@@ -237,11 +196,9 @@
 
 
         </div>
+        </div>
     </div>
-    <?php
-        approvedSuccess();
-    ?>
-   
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -380,8 +337,5 @@ document.getElementById('departmentSelect').addEventListener('change', function 
         }
     });
 });
-
-
-   </script>
-</body>
-</html>
+</script>
+<?php include '../../templates/Ufooter.php'; ?>

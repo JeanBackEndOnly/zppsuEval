@@ -36,9 +36,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (!empty($professorInDept)): ?>
+                                <?php if (!empty($professor)): ?>
                                     <?php $count = 1; ?>
-                                    <?php foreach ($professorInDept as $prof): ?>
+                                    <?php foreach ($professor as $prof): ?>
                                         <tr>
                                             <th scope="row"><?= $count++ ?></th>
                                             <td><?= htmlspecialchars($prof['teacherID']) ?></td>
