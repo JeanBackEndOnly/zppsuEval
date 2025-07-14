@@ -4,6 +4,9 @@
         background-color: var(--new);
         font-weight: 500;
     }
+    .dashboardNav{
+        background: linear-gradient(40deg , #77070b62,#77070b62, #77070A, #77070b62, #77070b62) !important;
+    }
 </style>
 <div class="main w-100 h-100 d-flex flex-column">
     <?= getHeader() ?>
@@ -11,17 +14,23 @@
         <div class="col-auto sideNav bg-linear h-100">
             <div class="sideContents" id="sideContents">
                 <div class="profileBox w-100 d-flex flex-column justify-content-center align-items-center mt-2 mb-3">
-                    <img src="../../assets/image/zppsu-logo.png" alt="pfp" id="pfpOnTop">
+                    <?php if($student_info["users_profile"] != '') { ?><img src="../../assets/image/<?= $student_info["users_profile"] ?>" alt="pfp" id="pfpOnTop"><?php }else{ ?>
+                    <img src="../../assets/image/Avatar.png" alt="pfp" id="pfpOnTop"><?php } ?>
                     <label class="fw-bold text-white"><?= $student_info["SchoolID"] ?></label>
-                    <h5 class="text-white"><?= $student_info["lname"] . ", " . $student_info["fname"]  ?></h5>
+                    <label class="text-white text-center fw-bold"><?= $student_info["lname"] . ", " . $student_info["fname"]  ?></label>
                 </div>
                 <?= getNav() ?>
             </div>
         </div>
 
         <div class="col content p-0">
-            <div class="containerDashboard w-100">
-                <div class="card p-3 m-3 shadow" style="width: 97%; height: 95%;">
+            <div class="col-md-12 col-md-11 d-flex align-items-center justify-content-center mt-1 mb-4">
+                <div class="col-md-11 col-md-11 d-flex align-items-center justify-content-start">
+                    <h3 class="fw-bold text-muted">EVALUATEES</h3>
+                </div>
+            </div>
+            <div class="containerDashboard w-100 col-md-12 col-md-11 d-flex align-items-center justify-content-center">
+                <div class="card p-0 m-0 shadow col-md-11 p-2">
                     <h4 class="mb-3">Professors in Your Department</h4>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover align-middle text-center">

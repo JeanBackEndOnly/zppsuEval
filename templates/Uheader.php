@@ -18,6 +18,23 @@ $professor = $prof["professor"];
 $semester = $info['semester'];
 $departments = $info['department'];
 $yearSection = $info['yearSection'];
+
+    $CurrentPass = false;
+    $Email = false;
+    $Password = false;
+    $signup = false;
+    $usernameNotmatch = false;
+    if(isset($_GET['CurrentPass']) && $_GET['CurrentPass'] === 'notMatch'){
+        $CurrentPass = true;
+    }elseif(isset($_GET['Email']) && $_GET['Email'] === 'registered'){
+        $Email = true;
+    }elseif(isset($_GET['Password']) && $_GET['Password'] === 'notMatch'){
+        $Password = true;
+    }elseif(isset($_GET['signup']) && $_GET['signup'] === 'success'){
+        $signup = true;
+    }elseif(isset($_GET['username']) && $_GET['username'] === 'notMatch'){
+        $usernameNotmatch = true;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,5 +52,12 @@ $yearSection = $info['yearSection'];
       @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
     </style>
     <script src="../../assets/js/main.js"></script>
+    <script>
+        const CurrentPass = <?php echo json_encode($CurrentPass); ?>;
+        const Email = <?php echo json_encode($Email); ?>;
+        const Password = <?php echo json_encode($Password); ?>;
+        const signup = <?php echo json_encode($signup); ?>;
+        const usernameNotmatch = <?php echo json_encode($usernameNotmatch); ?>;
+    </script>
 </head>
 <body>

@@ -5,7 +5,7 @@
         font-weight: 500;
     }
     .FacultyNav, .dashboardNav{
-        background: linear-gradient(40deg , #77070b62, #77070A, #77070b62) !important;
+        background: linear-gradient(40deg , #77070b62,#77070b62, #77070A, #77070b62, #77070b62) !important;
     }
 </style>
 <div class="main w-100 h-100 d-flex flex-column">
@@ -14,9 +14,8 @@
         <div class="col-auto sideNav bg-linear h-100">
             <div class="sideContents" id="sideContents">
                 <div class="profileBox w-100 d-flex flex-column justify-content-center align-items-center mt-2 mb-3">
-                    <img src="../../assets/image/zppsu-logo.png" alt="pfp" id="pfpOnTop">
-                    <label class="fw-bold text-white"><?= $student_info["SchoolID"] ?></label>
-                    <h5 class="text-white"><?= $student_info["lname"] . ", " . $student_info["fname"]  ?></h5>
+                    <img src="../../assets/image/admin.png" alt="pfp" id="pfpOnTop">
+                    <h5 class="text-white">ADMIN</h5>
                 </div>
                 <?= getAdminNav() ?>
             </div>
@@ -79,9 +78,9 @@
 
                     <!-- Delete confirmation modal -->
                     <div id="deletesubjects" class="modal fade" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog modal-dialog-top">
                         <div class="modal-content border-0 shadow">
-                        <div class="modal-header bg-danger text-white">
+                        <div class="modal-header bg-linear text-white">
                             <h5 class="modal-title">Confirm Deletion</h5>
                             <button type="button" class="btn-close" onclick="CancelJob()" aria-label="Close"></button>
                         </div>
@@ -103,9 +102,9 @@
 
                 <!-- Add Subject Modal -->
                 <div class="modal fade" id="addSubjectModal" tabindex="-1" aria-labelledby="addSubjectLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog modal-dialog-top">
                     <div class="modal-content border-0 shadow">
-                        <div class="modal-header bg-primary text-white">
+                        <div class="modal-header bg-linear text-white">
                         <h5 class="modal-title" id="addSubjectLabel">Add Subject</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>

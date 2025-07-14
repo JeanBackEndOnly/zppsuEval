@@ -5,7 +5,7 @@
         font-weight: 500;
     }
     .CurriculumeNav, .dashboardNav{
-        background: linear-gradient(40deg , #77070b62, #77070A, #77070b62) !important;
+        background: linear-gradient(40deg , #77070b62,#77070b62, #77070A, #77070b62, #77070b62) !important;
     }
 </style>
 <div class="main w-100 h-100 d-flex flex-column">
@@ -14,9 +14,8 @@
         <div class="col-auto sideNav bg-linear h-100">
             <div class="sideContents" id="sideContents">
                 <div class="profileBox w-100 d-flex flex-column justify-content-center align-items-center mt-2 mb-3">
-                    <img src="../../assets/image/zppsu-logo.png" alt="pfp" id="pfpOnTop">
-                    <label class="fw-bold text-white"><?= $student_info["SchoolID"] ?></label>
-                    <h5 class="text-white"><?= $student_info["lname"] . ", " . $student_info["fname"]  ?></h5>
+                    <img src="../../assets/image/admin.png" alt="pfp" id="pfpOnTop">
+                    <h5 class="text-white">ADMIN</h5>
                 </div>
                 <?= getAdminNav() ?>
             </div>
@@ -72,29 +71,9 @@
             </div>
 
             <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-dialog modal-dialog-top">
                 <div class="modal-content shadow">
-                  <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body text-center">
-                    <p>Are you sure you want to delete this user?</p>
-                    <form action="" method="post" id="deleteForm">
-                      <input type="hidden" name="delete" value="userAccount">
-                      <input type="hidden" name="id" id="usersID" value="">
-                      <button type="submit" class="btn btn-danger me-2">Yes, Delete</button>
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content shadow">
-                  <div class="modal-header bg-danger text-white">
+                  <div class="modal-header bg-linear text-white">
                     <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
@@ -115,14 +94,14 @@
             <div class="modal-dialog modal-dialog-scrollable modal-lg">
                 <div class="modal-content shadow-lg">
                     
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-linear text-white">
                     <h5 class="modal-title ms-auto" id="addEvaluateeLabel">Add Evaluatee</h5>
                     <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
             <div class="col-12 text-end">
-                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="addSubject()">Add Another Subject</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="addSubject()">Add Another Subject</button>
                         </div>
-                <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data">
+                <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data" style="overflow-y: scroll;">
                     <input type="hidden" name="professorsds" value="asdmin">
 
                     <div class="modal-body custom-modal-body">
@@ -130,7 +109,7 @@
 
                     <div class="mb-3 text-center">
                         <label for="professor_Profile">
-                        <img src="../../assets/image/users.png" alt="" id="propayl" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
+                        <img src="../../assets/image/users.png" alt="" id="propayl" class="rounded-circle" style="width: 120px; height: 120px; border-radius: 50%;">
                         </label>
                         <input type="file" name="professor_Profile" id="professor_Profile" style="display: none;" onchange="previewImage(event)">
                     </div>

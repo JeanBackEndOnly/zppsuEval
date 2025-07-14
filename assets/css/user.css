@@ -52,10 +52,10 @@ a{
     text-decoration: none !important;
 }
 .bg-linear{
-    background: linear-gradient(40deg , var(--new), var(--middle), var(--new));
+    background: linear-gradient(40deg , var(--new), var(--middle), var(--new)) !important;
 }
 .bg-linearOne{
-    background: linear-gradient(40deg , var(--new), var(--middleOne), var(--new));
+    background: linear-gradient(40deg , var(--new), var(--middleOne), var(--new)) !important;
 }
 .profileMenu{
     position: absolute !important;
@@ -67,4 +67,39 @@ a{
 }
 .profileMenu li{
     list-style-type: none;
+    color: #4BB543;
+}
+.otherButtons{
+    margin-right: 2rem;
+}
+@media (max-width: 576px) {
+    .sideNav {
+        position: absolute;
+        transform: translateX(-50rem);
+        z-index: 55;
+        background: linear-gradient(40deg , var(--new), var(--middleOne), var(--new)) !important;
+    }
+    .burger{
+        display: flex !important;
+    }
+    .logo{
+        margin-left: -15px;
+        margin-right: .1rem;
+    }
+    .logo h3{
+        font-size: 12px;
+        width: 9rem !important;
+    }
+    .otherButtons{
+        margin-right: 1rem !important;
+    }
+    .buttonUPdate button{
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+    }
+    .otherButtons img{
+        width: 30px;
+        height: 30px;
+        margin: 0 !important;
+    }
 }

@@ -38,9 +38,55 @@
             </div>
         </div>
     </main>
-<?php
-    approvedSuccess();
-?>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (signup) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Sign-up Successfully!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['signup']);
+        }else if (usernameNotmatch) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Username not match!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['username']);
+        }else if (Password) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Password not match!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['Password']);
+        }
+        function removeUrlParams(params) {
+            const url = new URL(window.location);
+            params.forEach(param => url.searchParams.delete(param));
+            window.history.replaceState({}, document.title, url.toString());
+        }
+    });
+</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="../webApp/main.js"></script>
 <?php include '../templates/footer.php'?>

@@ -5,7 +5,7 @@
         font-weight: 500;
     }
     .FacultyNav, .dashboardNav{
-        background: linear-gradient(40deg , #77070b62, #77070A, #77070b62) !important;
+       background: linear-gradient(40deg , #77070b62,#77070b62, #77070A, #77070b62, #77070b62) !important;
     }
 </style>
 <div class="main w-100 h-100 d-flex flex-column">
@@ -14,9 +14,8 @@
         <div class="col-auto sideNav bg-linear h-100">
             <div class="sideContents" id="sideContents">
                 <div class="profileBox w-100 d-flex flex-column justify-content-center align-items-center mt-2 mb-3">
-                    <img src="../../assets/image/zppsu-logo.png" alt="pfp" id="pfpOnTop">
-                    <label class="fw-bold text-white"><?= $student_info["SchoolID"] ?></label>
-                    <h5 class="text-white"><?= $student_info["lname"] . ", " . $student_info["fname"]  ?></h5>
+                    <img src="../../assets/image/admin.png" alt="pfp" id="pfpOnTop">
+                    <h5 class="text-white">ADMIN</h5>
                 </div>
                 <?= getAdminNav() ?>
             </div>

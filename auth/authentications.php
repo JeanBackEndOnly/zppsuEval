@@ -33,7 +33,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     if (email_registered($pdo, $email)) {
-        $errors['email_exists'] = "Email is already registered.";
+        header("Location: ../src/register.php?Email=registered");
+        die();
     }
 
     if (username_taken($pdo, $username)) {
@@ -42,7 +43,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     if (!password_notMatch($password, $confirm_password)) {
-        $errors['password_mismatch'] = "Passwords do not match.";
+        header("Location: ../src/register.php?Password=notMatch");
+        die();
     }
 
     if (!password_secured($password)) {
@@ -588,7 +590,7 @@ if (isset($_POST["password"]) && $_POST["password"] == "admin") {
 }
 
 if (isset($_POST["passwordChange"]) && $_POST["passwordChange"] == "users") {
-    isset($_GET["id"]) ? $id = $_GET["id"] : null;
+    isset($_SESSION["user_id"]) ? $id = $_SESSION["user_id"] : "null";
     $current_password = $_POST["current_password"];
     $new_password = $_POST["new_password"];
     $confirm_password = $_POST["confirm_password"];
@@ -597,10 +599,12 @@ if (isset($_POST["passwordChange"]) && $_POST["passwordChange"] == "users") {
         $errors = [];
 
         if (!password_notMatch($confirm_password, $new_password)) {
-            $errors["password_notMatch"] = "Password not match!";
+            header("Location: ../src/student/settings.php?password=notMatch");
+            die();
         }
         if (currentPasswordUsers($pdo, $id, $current_password)) {
-            $errors["password_notMatch"] = "Current Password not match!";
+            header("Location: ../src/student/settings.php?CurrentPass=notMatch");
+            die();
         }
         if ($errors) {
             $_SESSION["signup_errors"] = $errors;

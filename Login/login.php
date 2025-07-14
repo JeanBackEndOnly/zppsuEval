@@ -37,9 +37,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         if (!$result) {
-            $errors["login_incorrect"] = "Incorrect username!";
+            header("Location: ../src/index.php?username=notMatch");
+            die();
         } elseif (wrong_password($password, $result["password"])) {
-            $errors["login_incorrect"] = "Wrong password!";
+            header("Location: ../src/index.php?Password=notMatch");
+            die();
         }
 
         if ($errors) {

@@ -22,6 +22,7 @@ function getUsersInfo(){
     $query = "SELECT * FROM users
     INNER JOIN students ON users.id = students.user_id
     INNER JOIN department ON students.department_id = department.id
+    INNER JOIN year_and_section ON students.year_section_id = year_and_section.id
     WHERE users.id = :id;";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(":id", $users_id);

@@ -68,7 +68,7 @@ $selected_term = $_GET['filter_term'] ?? '';
         font-weight: 500;
     }
     .dashboardNav, .CurriculumeNav{
-        background: linear-gradient(40deg , #77070b62, #77070A, #77070b62) !important;
+       background: linear-gradient(40deg , #77070b62,#77070b62, #77070A, #77070b62, #77070b62) !important;
     }
 </style>
 <div class="main w-100 h-100 d-flex flex-column">
@@ -77,9 +77,8 @@ $selected_term = $_GET['filter_term'] ?? '';
         <div class="col-auto sideNav bg-linear h-100">
             <div class="sideContents" id="sideContents">
                 <div class="profileBox w-100 d-flex flex-column justify-content-center align-items-center mt-2 mb-3">
-                    <img src="../../assets/image/zppsu-logo.png" alt="pfp" id="pfpOnTop">
-                    <label class="fw-bold text-white"><?= $student_info["SchoolID"] ?></label>
-                    <h5 class="text-white"><?= $student_info["lname"] . ", " . $student_info["fname"]  ?></h5>
+                    <img src="../../assets/image/admin.png" alt="pfp" id="pfpOnTop">
+                    <h5 class="text-white">ADMIN</h5>
                 </div>
                 <?= getAdminNav() ?>
             </div>
@@ -136,7 +135,7 @@ $selected_term = $_GET['filter_term'] ?? '';
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <form method="POST">
-                                        <div class="modal-header bg-primary text-white">
+                                        <div class="modal-header bg-linear text-white">
                                             <h5 class="modal-title" id="assignProfessorModalLabel">Assign Faculty Member for Evaluation</h5>
                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
@@ -190,12 +189,12 @@ $selected_term = $_GET['filter_term'] ?? '';
                         </div>
                         <div class="professors-table-wrapper col-md-12">
                             <div class="card shadow rounded-2 col-md-12" style="height: 66vh;">
-                                <div class="card-header bg-secondary text-white rounded-top-2">
+                                <div class="card-header bg-linear text-white rounded-top-2">
                                     <h5 class="mb-0 rounded-2">Assigned Professors</h5>
                         </div>
                             <div class="card-body table-responsive col-md-11">
                                 <table class="table table-bordered table-hover table-striped" id="professorTable">
-                                    <thead class="table-secondary">
+                                    <thead class="table-secondary ">
                                         <tr>
                                             <th>Faculty Name</th>
                                             <th>Term</th>

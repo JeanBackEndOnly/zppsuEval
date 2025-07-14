@@ -1,28 +1,67 @@
+<?php include_once '../../auth/control.php'; 
+$info = getUsersInfo();
+$student_info = $info['student_info']; ?>
+
 <?php function getHeader() { ?>
 
     <div class="header bg-linear w-100 d-flex flex-row justify-content-between mb-1">
+        <div class="burger" style="display: none;">
+            <button type="button" style="background: none; border: none;" onclick="burgerButton()"><i class="fa-solid fa-bars fs-3 ms-2 text-white"></i></button>
+        </div>
         <div class="logo" style="display: flex; height: 100%; align-items: center;">
             <img src="../../assets/image/zppsu-logo.png" alt="pfp" id="pfpOnTop" class="ms-4 headerImg">
             <h3 id="userTitle" class="text-white m-0 ms-2">ZPPSU EVALUATION SYSTEM</h3>
         </div>
-        <div class="otherButtons d-flex flex-row w-auto me-5">
+        <div class="otherButtons d-flex flex-row w-auto">
             <button type="submit" onclick="profileMenu()" id="buttonpfpmenu" class="d-flex buttonNoBG flex-row w-auto align-items-center h-100">
-                <img src="../../assets/image/zppsu-logo.png" class="headerImg" alt="pfp" id="pfpOnTop">
-                <p class="d-flex h-100 p-0 m-0 align-items-center text-white"><?php echo isset($student_info["lname"]) ? $student_info["lname"] : "nope" ." "; ?><i class="ms-1 fa-solid fa-caret-down"></i></p>
+                <img src="../../assets/image/Avatar.png" class="headerImg" alt="pfp" id="pfpOnTop">
+                <p class="d-flex h-100 p-0 m-0 align-items-center text-white ms-2"><?= $student_info["lname"] ?? 'Student' ?><i class="ms-2 fa-solid fa-caret-down"></i></p>
             </button>
         <script>
             function profileMenu(){
-            const sd = document.getElementById("profileMenu");
-            console.log("button clicked!")
-            if(sd.style.display == 'none'){
-                sd.style.display = 'flex';
-            }else{
-                sd.style.display = 'none';
+                const sd = document.getElementById("profileMenu");
+                console.log("button clicked!")
+                if(sd.style.display == 'none'){
+                    sd.style.display = 'flex';
+                }else{
+                    sd.style.display = 'none';
+                }
             }
-        }
+           let isShifted = false; // <-- ADD THIS LINE at the top
+
+            function profileMenu(){
+                const sd = document.getElementById("profileMenu");
+                console.log("button clicked!");
+                if(sd.style.display == 'none'){
+                    sd.style.display = 'flex';
+                } else {
+                    sd.style.display = 'none';
+                }
+            }
+
+            function burgerButton() {
+                const sidebar = document.querySelector(".sideNav");
+                if (!sidebar) {
+                    console.warn("Element with class 'sideNav' not found.");
+                    return;
+                }
+
+                sidebar.style.display = 'flex';
+                sidebar.style.flexDirection = 'column';
+                sidebar.style.transition = 'transform 0.45s cubic-bezier(.4,0,.2,1)';
+                sidebar.style.willChange = 'transform';
+
+                if (!isShifted) {
+                    sidebar.style.transform = 'translateX(0)';
+                } else {
+                    sidebar.style.transform = 'translateX(-50rem)';
+                }
+
+                isShifted = !isShifted;
+            }
         </script>
-            <div class="profileMenu bg-linearOne shadow flex-column rounded-2 w-auto h-auto p-2" id="profileMenu" style="display: none; z-index: 5 !importantl">
-                <li id="borderBottom" class="m-0 mb-2 mt-1"><a href="settings.php"><p class="m-0"><i class="fa-solid fa-gear"></i>SETTINGS</p></a></li>
+            <div class="profileMenu bg-linearOne shadow flex-column rounded-2 w-auto h-auto p-3" id="profileMenu" style="display: none; z-index: 5 !important">
+                <li id="borderBottom" class="m-0 mb-3 mt-1"><a href="settings.php"><p class="m-0"><i class="fa-solid fa-gear"></i>SETTINGS</p></a></li>
                 <li class="m-0 mb-1"><a href="../logout.php" class="m-0" id="l"><p class="m-0"><i class="fa-solid fa-right-from-bracket"></i>LOGOUT</p></a></li>
             </div>
         </div>
@@ -96,9 +135,9 @@
             <img src="../../assets/image/zppsu-logo.png" alt="pfp" id="pfpOnTop" class="ms-4 headerImg">
             <h3 id="userTitle" class="text-white m-0 ms-2">ZPPSU EVALUATION SYSTEM</h3>
         </div>
-        <div class="otherButtons d-flex flex-row w-auto me-5">
+        <div class="otherButtons d-flex flex-row w-auto">
             <button type="submit" onclick="profileMenu()" id="buttonpfpmenu" class="d-flex buttonNoBG flex-row w-auto align-items-center h-100">
-                <img src="../../assets/image/zppsu-logo.png" class="headerImg" alt="pfp" id="pfpOnTop">
+                <img src="../../assets/image/admin.png" class="headerImg" alt="pfp" id="pfpOnTop">
                 <p class="d-flex h-100 p-0 m-0 align-items-center text-white">ADMIN<i class="ms-1 fa-solid fa-caret-down"></i></p>
             </button>
         <script>
