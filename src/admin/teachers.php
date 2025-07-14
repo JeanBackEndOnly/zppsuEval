@@ -23,11 +23,11 @@
         </div>
 
         <div class="col content p-0 d-flex flex-column align-items-center">
-          <div class="title mt-2 col-md-11 d-flex justify-content-start">
+          <div class="title mb-4 col-md-11 d-flex justify-content-start">
                 <label class="text-black fw-bold fs-2 text-muted">FACULTY MANAGEMENT</label>
             </div>
             <div class="d-flex justify-content-between align-items-center col-md-11 mb-2" style="margin-top: 1rem;">
-             <li class="list-unstyled m-0 col-md-8 col-9">
+             <li class="list-unstyled m-0 col-md-10 col-10">
                 <form class="input-group">
                     <input type="text" name="search" id="search" class="form-control" placeholder="Search...">
                     <button class="btn btn-outline-secondary" type="button" id="buttonSearchHehe">

@@ -16,6 +16,8 @@ $professorInDept = $info['professorInDept'];
 $prof = getProfActiveEval();
 $professor = $prof["professor"];
 $semester = $info['semester'];
+$departments = $info['department'];
+$yearSection = $info['yearSection'];
 ?>
 <!DOCTYPE html>
 <html lang="en">

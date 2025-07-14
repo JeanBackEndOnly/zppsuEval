@@ -86,10 +86,10 @@ $selected_term = $_GET['filter_term'] ?? '';
         </div>
 
         <div class="col content p-0 d-flex justify-content-center flex-column align-items-center w-100">
-            <div class="title col-md-11 d-flex justify-content-start">
+            <div class="title col-md-11 d-flex justify-content-start mb-4">
                 <label class="text-black fw-bold fs-2 text-muted">ASSIGN FACULTY</label>
             </div>
-            <div class="container p-0 mt-3 d-flex flex-column align-items-center">
+            <div class="container p-0 d-flex flex-column align-items-center m-0">
                 <?php if (!empty($_SESSION['flash_message'])): ?>
                     <div class="container mt-3">
                         <div class="alert alert-<?php echo htmlspecialchars($_SESSION['flash_message']['type']); ?> alert-dismissible fade show" role="alert" style="position: absolute; transform: translate(-50%, -50%); top: 10%; left: 50%; z-index: 3;">
@@ -101,15 +101,7 @@ $selected_term = $_GET['filter_term'] ?? '';
                 <?php endif; ?>
 
                         <div class="top-bar col-md-11 col-11 d-flex justify-content-between flex-row">
-                            <li class="list-unstyled m-0 col-md-5">
-                                <form class="input-group">
-                                    <input type="text" id="searchInput" class="form-control width-60" placeholder="Search...">
-                                    <button class="btn btn-outline-secondary" type="button">
-                                        <i class="fa-solid fa-magnifying-glass"></i>
-                                    </button>
-                                </form>
-                            </li>
-                            <div class="selectSemesterHEhe d-flex justify-content-start">
+                            <div class="selectSemesterHEhe d-flex justify-content-start col-md-3 m-0 p-0">
                                 <form method="GET" class="d-flex gap-2 align-items-center w-100">
                                     <select name="filter_term" class="form-select filter-term-select w-100" onchange="this.form.submit()">
                                         <option value="">-- Filter by Semester --</option>
@@ -124,12 +116,21 @@ $selected_term = $_GET['filter_term'] ?? '';
                                     <noscript><button class="btn btn-secondary">Filter</button></noscript>
                                 </form>
                             </div>
-                        </div>
-                        <div class="buttonAdd col-md-11 d-flex justify-content-end mb-2">
+                            <li class="list-unstyled m-0 col-md-6 p-0">
+                                <form class="input-group">
+                                    <input type="text" id="searchInput" class="form-control width-60" placeholder="Search...">
+                                    <button class="btn btn-outline-secondary" type="button">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </button>
+                                </form>
+                            </li>
+                            <div class="buttonAdd col-md-2 d-flex justify-content-end mb-2">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#assignProfessorModal">
-                                Assign Faculty Member
+                                Assign Faculty
                             </button>
                         </div>
+                        </div>
+                        
                         
                         <div class="modal fade" id="assignProfessorModal" tabindex="-1" aria-labelledby="assignProfessorModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -187,7 +188,7 @@ $selected_term = $_GET['filter_term'] ?? '';
                                 </div>
                             </div>
                         </div>
-                        <div class="professors-table-wrapper col-md-11">
+                        <div class="professors-table-wrapper col-md-12">
                             <div class="card shadow rounded-2 col-md-12" style="height: 66vh;">
                                 <div class="card-header bg-secondary text-white rounded-top-2">
                                     <h5 class="mb-0 rounded-2">Assigned Professors</h5>
