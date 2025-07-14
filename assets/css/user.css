@@ -1,0 +1,70 @@
+:root{
+    --main_bg:#CECECE;
+    --content_bg: rgba(255, 255, 255);
+    --black: #000;
+    --hover: #ff2828;
+    --success: #4BB543;
+    --form_bg: rgba(255, 255, 255, 0.5);
+    --right: #5a5a5a;
+    --left: #ffffff;
+    --new: #77070A;
+    --middle: #f10000a9;
+    --middleOne: #f10000;
+    --lightBlack: #242424;
+    --sideNav: #343A40;
+}
+html, body {
+    height: 100vh !important;
+    margin: 0;
+    padding: 0;
+}
+.main {
+    height: 100vh !important;
+}
+.headerImg{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.header{
+    height: 7rem !important;
+}
+.buttonNoBG{
+    border: none !important;
+    background: none !important;
+}
+.text-white{
+    color: #fff !important;
+}
+.sideNav{
+    border-top-right-radius: 10px;
+    width: 15rem !important;
+}
+.sideNav img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+.content{
+    height: 90vh !important;
+}
+a{
+    text-decoration: none !important;
+}
+.bg-linear{
+    background: linear-gradient(40deg , var(--new), var(--middle), var(--new));
+}
+.bg-linearOne{
+    background: linear-gradient(40deg , var(--new), var(--middleOne), var(--new));
+}
+.profileMenu{
+    position: absolute !important;
+    transform: translateY(3.5rem);
+    z-index: 2s;
+}
+.profileMenu a{
+    color: #fff !important;
+}
+.profileMenu li{
+    list-style-type: none;
+}

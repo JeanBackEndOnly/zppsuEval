@@ -1,0 +1,41 @@
+:root{
+    --main_bg:#CECECE;
+    --content_bg: rgba(255, 255, 255);
+    --black: #000;
+    --hover: #ff2828;
+    --success: #4BB543;
+    --form_bg: rgba(255, 255, 255, 0.5);
+    --right: #5a5a5a;
+    --left: #ffffff;
+    --new: #77070A;
+    --middle: #f10000a9;
+    --lightBlack: #242424;
+    --sideNav: #343A40;
+}
+.login-page{
+    background: url("../image/BG.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+html, body {
+    height: 100vh !important;
+    margin: 0;
+    padding: 0;
+}
+.buttonNoBG{
+    border: none !important;
+    background: none !important;
+}
+main {
+    height: 100vh !important;
+}
+.headerLogin{
+    background: linear-gradient(40deg , var(--new), var(--middle), var(--new));
+}
+.text-white{
+    color: var(--left) !important;
+}
+a{
+    text-decoration: none;
+}

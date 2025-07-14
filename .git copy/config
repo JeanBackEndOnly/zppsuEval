@@ -1,0 +1,19 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+[submodule]
+	active = .
+[remote "origin"]
+	url = https://github.com/ManCoders/ZPCO-SYS.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "root"]
+	remote = origin
+	merge = refs/heads/root
+	vscode-merge-base = origin/root
+	vscode-merge-base = origin/root
+[lfs]
+	repositoryformatversion = 0
