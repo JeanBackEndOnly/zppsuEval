@@ -48,28 +48,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_eval'])) {
 
     $subjectId = $_POST['subject_id'] ?? null;
     if ($subjectId === "") $subjectId = null; // convert empty to null
-    $studentId = $student_info['id'];
+    $studentId = $student_info['user_id'];
 
     $pdo->beginTransaction();
     $stmt = $pdo->prepare("
-        INSERT INTO grade (professor_id, evaluator_id, evaluator_type,
-                           subject_id, questionnaire_id, school_year_semester_id, score)
-        VALUES (?, ?, 'STUDENT', ?, ?, ?, ?)
+    INSERT INTO grade (professor_id, evaluator_id, evaluator_type,
+                       subject_id, questionnaire_id, school_year_semester_id, score)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
     ");
-    foreach ($_POST['response'] as $qid => $score) {
+
+    foreach ($_POST['response'] as $qId => $score) {
         $stmt->execute([
             $prof['id'],
             $studentId,
+            'STUDENT',     // <- now bound as placeholder #3
             $subjectId,
-            $qid,
+            $qId,
             $termId,
             (int)$score
         ]);
     }
-    $pdo->commit();
 
-    header("Location: evaluateProfessor.php?teacherID=" . urlencode($teacherID) . "&saved=1");
+
+    /* ---------- now refresh / upsert total_grade ---------- */
+    $sum = $pdo->prepare("
+    INSERT INTO total_grade
+        (professor_id, subject_id, school_year_semester_id,
+        average_score, total_score, evaluation_count)
+    SELECT
+        :prof_id,
+        :sub_id,
+        :term_id,
+        AVG(score)  AS average_score,
+        SUM(score)  AS total_score,
+        COUNT(*)    AS evaluation_count
+    FROM grade
+    WHERE professor_id = :prof_id
+        AND subject_id   <=> :sub_id      /* <=> treats NULL = NULL */
+        AND school_year_semester_id = :term_id
+    GROUP BY professor_id, subject_id, school_year_semester_id
+    ON DUPLICATE KEY UPDATE
+        average_score    = VALUES(average_score),
+        total_score      = VALUES(total_score),
+        evaluation_count = VALUES(evaluation_count),
+        updated_at       = CURRENT_TIMESTAMP
+    ");
+    $sum->execute([
+    ':prof_id' => $prof['id'],
+    ':sub_id'  => $subjectId,   // may be NULL
+    ':term_id' => $termId
+    ]);
+
+    /* ---------- commit & redirect ---------- */
+    $pdo->commit();
+    header("Location: evaluateProfessor.php?teacherID=".urlencode($teacherID)."&saved=1");
     exit;
+
+
 }
 ?>
 

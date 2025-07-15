@@ -257,7 +257,18 @@ function db_connect()
 foreach ($tableQueries as $query) {
     $pdo->exec($query);
 }
-
+try {
+    $pdo->exec("
+        ALTER TABLE total_grade
+        ADD UNIQUE KEY uniq_summary
+            (professor_id, subject_id, school_year_semester_id)
+    ");
+} catch (PDOException $e) {
+    // 1061 = duplicate key name, 1068 = multiple primary keys
+    if ($e->errorInfo[1] !== 1061 && $e->errorInfo[1] !== 1068) {
+        throw $e;   // only re‑throw if it’s a different problem
+    }
+}
 // Insert evaluation questions separately
 $criteriaInsertQuery = "
     INSERT INTO criteria (name, description) VALUES

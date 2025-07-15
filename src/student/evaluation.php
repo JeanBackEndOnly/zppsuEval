@@ -31,43 +31,47 @@
             </div>
             <div class="containerDashboard w-100 col-md-12 col-md-11 d-flex align-items-center justify-content-center">
                 <div class="card p-0 m-0 shadow col-md-11 p-2">
-                    <h4 class="mb-3">Professors in Your Department</h4>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover align-middle text-center">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Professor ID</th>
-                                    <th scope="col">Full Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Position</th>
-                                    <th scope="col">Action</th> 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($professor)): ?>
-                                    <?php $count = 1; ?>
-                                    <?php foreach ($professor as $prof): ?>
-                                        <tr>
-                                            <th scope="row"><?= $count++ ?></th>
-                                            <td><?= htmlspecialchars($prof['teacherID']) ?></td>
-                                            <td><?= htmlspecialchars($prof['fname'] . ' ' . $prof['lname']) ?></td>
-                                            <td><?= htmlspecialchars($prof['email']) ?></td>
-                                            <td><?= htmlspecialchars($prof['profession']) ?></td>
-                                            <td>
-                                                <a href="evaluateProfessor.php?teacherID=<?= $prof['teacherID'] ?>" class="btn btn-success btn-sm w-100">Evaluate</a>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="6" class="text-muted fst-italic">No assigned professors to evaluate.</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <?php if (!empty($professor)): ?>
+                            <?php foreach ($professor as $prof): ?>
+                                <div class="col">
+                                    <div class="card h-100">
+                                        <div class="card-body text-center">
+                                            <?php if($prof["professor_profile"] !== null) {?>
+                                                <img src="../../assets/image/uploads/<?= $prof["professor_profile"] ?>" alt="" style="width: 150px; height: 150px; border-radius: 50%;">
+                                            <?php }else{ ?>
+                                                <img src="../../assets/image/user.png" alt="icon">
+                                            <?php } ?>
+                                            <h6 class="card-subtitle text-muted mb-2">
+                                                Professor ID: <?= htmlspecialchars($prof['teacherID']) ?>
+                                            </h6>
 
+                                            <h5 class="card-title mb-1">
+                                                <?= htmlspecialchars($prof['fname'].' '.$prof['lname']) ?>
+                                            </h5>
+
+                                            <p class="card-text mb-1">
+                                                <strong>Email:</strong> <?= htmlspecialchars($prof['email']) ?><br>
+                                                <strong>Position:</strong> <?= htmlspecialchars($prof['profession']) ?>
+                                            </p>
+
+                                            <a href="evaluateProfessor.php?teacherID=<?= $prof['teacherID'] ?>"
+                                            class="btn btn-success btn-sm w-100">
+                                            Evaluate
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="col">
+                                <div class="alert alert-secondary text-center w-100">
+                                    No assigned professors to evaluate.
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
+
                 </div>
             </div>
         </div>
