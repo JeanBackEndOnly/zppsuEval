@@ -1,0 +1,188 @@
+<?php
+include '../../templates/Uheader.php';
+include '../../templates/HeaderNav.php';
+$pdo = db_connect();
+
+/* 1. Get professor by teacherID */
+if (!isset($_GET['teacherID'])) {
+    header('Location: dashboard.php');
+    exit;
+}
+$teacherID = urldecode($_GET['teacherID']);
+$profStmt = $pdo->prepare("
+    SELECT p.*, d.department_name
+    FROM professor p
+    LEFT JOIN department d ON p.department_id = d.id
+    WHERE p.teacherID = ?
+");
+$profStmt->execute([$teacherID]);
+$prof = $profStmt->fetch(PDO::FETCH_ASSOC) ?: die('Professor not found');
+
+/* 2. Load criteria */
+$criteria = $pdo->query("SELECT * FROM criteria ORDER BY id")->fetchAll(PDO::FETCH_ASSOC);
+
+/* 3. Load questions per criteria */
+$questions = [];
+$qRows = $pdo->query("SELECT * FROM questionnaire ORDER BY criteria_id, id")->fetchAll(PDO::FETCH_ASSOC);
+foreach ($qRows as $row) {
+    $questions[$row['criteria_id']][] = $row;
+}
+
+/* 4. Load grading scale */
+$scale = $pdo->query("SELECT * FROM grading_scale ORDER BY score_value DESC")->fetchAll(PDO::FETCH_ASSOC);
+
+/* 5. Get professor's assigned subjects */
+$subjectStmt = $pdo->prepare("
+    SELECT s.id, s.subject_name
+    FROM professor_subject ps
+    JOIN subjects s ON ps.subject_id = s.id
+    WHERE ps.professor_id = ?
+");
+$subjectStmt->execute([$prof['id']]);
+$subjects = $subjectStmt->fetchAll(PDO::FETCH_ASSOC);
+
+/* 6. Handle form submit */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_eval'])) {
+    $termId = $pdo->query("SELECT id FROM school_year_semester WHERE status = 'open' LIMIT 1")->fetchColumn();
+    if (!$termId) die('No active term.');
+
+    $subjectId = $_POST['subject_id'] ?? null;
+    if ($subjectId === "") $subjectId = null; // convert empty to null
+    $studentId = $student_info['id'];
+
+    $pdo->beginTransaction();
+    $stmt = $pdo->prepare("
+        INSERT INTO grade (professor_id, evaluator_id, evaluator_type,
+                           subject_id, questionnaire_id, school_year_semester_id, score)
+        VALUES (?, ?, 'STUDENT', ?, ?, ?, ?)
+    ");
+    foreach ($_POST['response'] as $qid => $score) {
+        $stmt->execute([
+            $prof['id'],
+            $studentId,
+            $subjectId,
+            $qid,
+            $termId,
+            (int)$score
+        ]);
+    }
+    $pdo->commit();
+
+    header("Location: evaluateProfessor.php?teacherID=" . urlencode($teacherID) . "&saved=1");
+    exit;
+}
+?>
+
+<style>
+    .dashboardNav { background: var(--new); font-weight: 500; }
+    .evaluationNav {
+        background: linear-gradient(40deg, #77070b62, #77070b62, #77070A, #77070b62, #77070b62) !important;
+    }
+    .likert th, .likert td { padding: .45rem; vertical-align: middle; }
+    .likert-desc { font-size: .8rem; }
+</style>
+
+<div class="main w-100 h-100 d-flex flex-column">
+    <?= getHeader() ?>
+    <div class="row w-100 m-0 p-0">
+        <div class="col-auto sideNav bg-linear h-100">
+            <div class="sideContents" id="sideContents">
+                <div class="profileBox w-100 d-flex flex-column justify-content-center align-items-center mt-2 mb-3">
+                    <?php if ($student_info["user_profile"] != '') { ?>
+                        <img src="../../assets/image/<?= $student_info["user_profile"] ?>" id="pfpOnTop">
+                    <?php } else { ?>
+                        <img src="../../assets/image/Avatar.png" id="pfpOnTop">
+                    <?php } ?>
+                    <label class="fw-bold text-white"><?= $student_info["SchoolID"] ?></label>
+                    <label class="text-white text-center fw-bold">
+                        <?= $student_info["lname"] . ", " . $student_info["fname"] ?>
+                    </label>
+                </div>
+                <?= getNav() ?>
+            </div>
+        </div>
+
+        <div class="col content p-0">
+            <div class="p-4">
+                <h4 class="mb-3">Evaluation Form</h4>
+
+                <form method="POST">
+                    <input type="hidden" name="save_eval" value="1">
+
+                    <?php if ($subjects): ?>
+                        <div class="mb-3" style="max-width:300px">
+                            <label class="form-label">Select Subject</label>
+                            <select name="subject_id" class="form-select" required>
+                                <option value="">-- choose --</option>
+                                <?php foreach ($subjects as $sub): ?>
+                                    <option value="<?= $sub['id'] ?>">
+                                        <?= htmlspecialchars($sub['subject_name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    <?php else: ?>
+                        <input type="hidden" name="subject_id" value="">
+                    <?php endif; ?>
+
+                    <?php foreach ($criteria as $c): ?>
+                        <h5 class="mb-1"><?= htmlspecialchars($c['name']) ?></h5>
+
+                        <table class="table table-bordered likert mb-3">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th class="text-start" style="width:45%">Question</th>
+                                    <?php foreach ($scale as $s): ?>
+                                        <th>
+                                            <div class="fw-bold"><?= htmlspecialchars($s['description']) ?></div>
+                                            <span class="likert-desc">(<?= $s['score_value'] ?>)</span>
+                                        </th>
+                                    <?php endforeach; ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($questions[$c['id']] ?? [] as $q): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($q['question_text']) ?></td>
+                                        <?php foreach ($scale as $s): ?>
+                                            <td class="text-center">
+                                                <input type="radio"
+                                                       name="response[<?= $q['id'] ?>]"
+                                                       value="<?= $s['score_value'] ?>" required>
+                                            </td>
+                                        <?php endforeach; ?>
+                                    </tr>
+                                <?php endforeach; ?>
+                                <?php if (empty($questions[$c['id']])): ?>
+                                    <tr>
+                                        <td colspan="<?= count($scale) + 1 ?>" class="text-center text-muted">
+                                            No questions defined for this criterion.
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    <?php endforeach; ?>
+
+                    <button class="btn btn-primary">Submit Evaluation</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php if (isset($_GET['saved'])): ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Evaluation submitted!',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    </script>
+<?php endif ?>
+
+<?php include '../../templates/Ufooter.php'; ?>

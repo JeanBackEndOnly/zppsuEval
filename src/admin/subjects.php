@@ -25,7 +25,7 @@
             <div class="title mb-4 col-md-11 d-flex justify-content-start fadeInAnimation">
                 <label class="text-black fw-bold fs-2 text-muted">SUBJECTS MANAGEMENT</label>
             </div>
-            <div class="container-fluid m-0 col-md-12 d-flex flex-column justify-content-start align-items-center" style="padding: 0;">
+            <div class="container-fluid m-0 col-md-12 d-flex flex-column justify-content-start align-items-center" style="padding: 0; heigth: 78vh;">
                     <div class="d-flex justify-content-between align-items-center col-md-11">
 
                     <!-- Department filter -->
@@ -51,7 +51,7 @@
                     </div>
 
                     <!-- Table -->
-                    <div class="table-responsive col-md-11 col-11 mt-2 rounded-2" style="height: 75vh;">
+                    <div class="table-responsive col-md-11 col-11 mt-2 rounded-2" style="height: 70vh;">
                    <table class="table table-bordered table-hover align-middle">
                         <thead class="table-dark text-center">
                             <tr>
@@ -143,6 +143,27 @@
     <script src="../../assets/js/hr/hrJ.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', ()=>{
+            const url = new URL(window.location);
+            const added   = url.searchParams.has('job');
+            const deleted = url.searchParams.has('deleted');
+
+            if (added || deleted) {
+                Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: added ? 'success' : 'error',
+                title: added ? 'Subject added successfully!' : 'Subject deleted successfully!',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                customClass:{popup:'swal2-row-toast'}
+                });
+                /* strip flags so toast doesn’t reappear on refresh */
+                ['job','deleted'].forEach(p=>url.searchParams.delete(p));
+                history.replaceState({}, document.title, url);
+            }
+        });
         function deleteSub(id) {
             document.getElementById("jobID").value = id;
             var deleteModal = new bootstrap.Modal(document.getElementById('deletesubjects'));

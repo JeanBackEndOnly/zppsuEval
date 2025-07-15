@@ -101,27 +101,39 @@ function db_connect()
                 UNIQUE KEY unique_professor_semester (professor_id, school_year_semester_id)
             );",
 
+            "CREATE TABLE IF NOT EXISTS criteria (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                description TEXT DEFAULT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );",
+
+
             "CREATE TABLE IF NOT EXISTS questionnaire (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 question_text VARCHAR(255) NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                criteria_id INT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (criteria_id) REFERENCES criteria(id) ON DELETE CASCADE
             );",
 
             "CREATE TABLE IF NOT EXISTS grade (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 professor_id INT NOT NULL,
-                evaluator_id INT NOT NULL, 
+                evaluator_id INT NOT NULL, -- ID of evaluator (can be student or supervisor)
+                evaluator_type ENUM('STUDENT', 'SUPERVISOR') NOT NULL, -- distinguishes evaluator source
                 subject_id INT NOT NULL,
                 questionnaire_id INT NOT NULL,
                 school_year_semester_id INT NOT NULL,
-                score TINYINT NOT NULL,  
+                score TINYINT NOT NULL, -- e.g., score from 1 to 5
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
                 FOREIGN KEY (professor_id) REFERENCES professor(id) ON DELETE CASCADE,
-                FOREIGN KEY (evaluator_id) REFERENCES professor(id), 
                 FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE,
                 FOREIGN KEY (questionnaire_id) REFERENCES questionnaire(id) ON DELETE CASCADE,
                 FOREIGN KEY (school_year_semester_id) REFERENCES school_year_semester(id) ON DELETE CASCADE
+                -- evaluator_id is not a strict FK because it can refer to either students or supervisors
             );",
 
             "CREATE TABLE IF NOT EXISTS total_grade (
@@ -138,6 +150,73 @@ function db_connect()
                 FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE,
                 FOREIGN KEY (school_year_semester_id) REFERENCES school_year_semester(id) ON DELETE CASCADE
             );",
+
+            "CREATE TABLE IF NOT EXISTS evaluator_group_summary (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                professor_id INT NOT NULL,
+                subject_id INT NOT NULL,
+                school_year_semester_id INT NOT NULL,
+                evaluator_type ENUM('STUDENT', 'SUPERVISOR') NOT NULL,
+                average_score DECIMAL(5,2) NOT NULL,       -- Example: 97.47
+                weight_percent DECIMAL(5,2) NOT NULL,      -- Example: 60.00
+                equivalent_point DECIMAL(5,2) NOT NULL,    -- Example: 58.48
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (professor_id) REFERENCES professor(id) ON DELETE CASCADE,
+                FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE,
+                FOREIGN KEY (school_year_semester_id) REFERENCES school_year_semester(id) ON DELETE CASCADE
+            );",
+
+            "CREATE TABLE IF NOT EXISTS evaluator_group_weight (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                evaluator_type ENUM('STUDENT', 'SUPERVISOR') NOT NULL UNIQUE,
+                weight_percent DECIMAL(5,2) NOT NULL -- Example: 60.00 = 60%
+            );",
+
+            
+
+            "CREATE TABLE IF NOT EXISTS grading_scale (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                score_value TINYINT NOT NULL,           -- Example: 5, 4, 3, etc.
+                description VARCHAR(100) NOT NULL       -- Example: Excellent, Good, etc.
+            );",
+            // "CREATE TABLE IF NOT EXISTS questionnaire (
+            //     id INT AUTO_INCREMENT PRIMARY KEY,
+            //     question_text VARCHAR(255) NOT NULL,
+            //     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            // );",
+
+            // "CREATE TABLE IF NOT EXISTS grade (
+            //     id INT AUTO_INCREMENT PRIMARY KEY,
+            //     professor_id INT NOT NULL,
+            //     evaluator_id INT NOT NULL, 
+            //     subject_id INT NOT NULL,
+            //     questionnaire_id INT NOT NULL,
+            //     school_year_semester_id INT NOT NULL,
+            //     score TINYINT NOT NULL,  
+            //     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+            //     FOREIGN KEY (professor_id) REFERENCES professor(id) ON DELETE CASCADE,
+            //     FOREIGN KEY (evaluator_id) REFERENCES professor(id), 
+            //     FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE,
+            //     FOREIGN KEY (questionnaire_id) REFERENCES questionnaire(id) ON DELETE CASCADE,
+            //     FOREIGN KEY (school_year_semester_id) REFERENCES school_year_semester(id) ON DELETE CASCADE
+            // );",
+
+            // "CREATE TABLE IF NOT EXISTS total_grade (
+            //     id INT AUTO_INCREMENT PRIMARY KEY,
+            //     professor_id INT NOT NULL,
+            //     subject_id INT NOT NULL,
+            //     school_year_semester_id INT NOT NULL,
+            //     average_score DECIMAL(4,2) NOT NULL,
+            //     total_score INT NOT NULL,
+            //     evaluation_count INT NOT NULL,
+            //     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+            //     FOREIGN KEY (professor_id) REFERENCES professor(id) ON DELETE CASCADE,
+            //     FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE,
+            //     FOREIGN KEY (school_year_semester_id) REFERENCES school_year_semester(id) ON DELETE CASCADE
+            // );",
 
             "CREATE TABLE IF NOT EXISTS year_and_section (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -180,33 +259,14 @@ foreach ($tableQueries as $query) {
 }
 
 // Insert evaluation questions separately
-$questionInsertQuery = "
-    INSERT INTO questionnaire (question_text) VALUES
-    ('Demonstrates mastery of the subject matter.'),
-    ('Explains the subject matter clearly and effectively.'),
-    ('Stimulates students’ interest in the subject.'),
-    ('Encourages student participation and critical thinking.'),
-    ('Treats students with respect and fairness.'),
-    ('Provides timely and constructive feedback.'),
-    ('Is punctual and uses class time effectively.'),
-    ('Is available for consultation and academic assistance.'),
-    ('Relates subject matter to real-life situations.'),
-    ('Uses appropriate and effective teaching strategies.'),
-    ('Makes effective use of learning materials and resources.'),
-    ('Maintains a classroom environment conducive to learning.'),
-    ('Demonstrates enthusiasm and passion for teaching.'),
-    ('Responds effectively to student questions and concerns.'),
-    ('Encourages academic integrity and honesty.'),
-    ('Demonstrates professional behavior and appearance.'),
-    ('Updates content and teaching strategies regularly.'),
-    ('Encourages independent learning and research.'),
-    ('Clearly communicates course objectives and expectations.'),
-    ('Evaluates students fairly based on clearly defined criteria.');
+$criteriaInsertQuery = "
+    INSERT INTO criteria (name, description) VALUES
+    ('Teaching Effectiveness', 'Evaluation of the professor’s teaching quality and clarity.'),
 ";
 
-$check = $pdo->query("SELECT COUNT(*) FROM questionnaire")->fetchColumn();
-if ($check == 0) {
-    $pdo->exec($questionInsertQuery);
+$criteriaCheck = $pdo->query("SELECT COUNT(*) FROM criteria")->fetchColumn();
+if ($criteriaCheck == 0) {
+    $pdo->exec($criteriaInsertQuery);
 }
 
         return $pdo;

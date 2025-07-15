@@ -80,6 +80,9 @@ a{
 .fadeInAnimation{
     animation: fadeInRight 1s ease-in-out;
 }
+.fadeInAnimationNav{
+    animation: fadeInRight .5s ease-in-out;
+}
 @media (max-width: 576px) {
     .sideNav {
         position: absolute;

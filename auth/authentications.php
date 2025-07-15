@@ -396,6 +396,29 @@ if(isset($_POST["semesterst"]) && $_POST["semesterst"] == "delete"){
     
 }
 
+if(isset($_POST["yearAndSection"]) && $_POST["yearAndSection"] == "delete"){
+    $semesterID = $_POST["id"];
+
+    if($semesterID){
+        $query = "DELETE FROM school_year_semester WHERE id = :id;";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(":id", $semesterID);
+        if ($stmt->execute()) {
+            echo json_encode(["success" => true, "message" => "User inserted successfully."]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Failed to insert user."]);
+        }
+        header("Location: ../src/admin/yearSection.php?deleteds=job");
+        $pdo=null;
+        $stmt=null;
+        die();
+    }else{
+        // header("Location: ../src/admin/Jobs.php?no=id");
+        echo $jobID;
+        die();
+    }
+    
+}
 
 if (isset($_POST["subject"]) && $_POST["subject"] == "admin") {
     $subjectName = trim($_POST["subject_name"]);

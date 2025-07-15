@@ -25,7 +25,7 @@
             <div class="title mb-4 col-md-11 d-flex justify-content-start fadeInAnimation">
                 <label class="text-black fw-bold fs-2 text-muted">DEPARTMENT MANAGEMENT</label>
             </div>
-            <div class="container-fluid m-0 p-0 col-md-12 d-flex jusridy-content-start align-items-center flex-column">
+            <div class="container-fluid m-0 p-0 col-md-12 d-flex jusridy-content-start align-items-center flex-column" style="height: 78vh;">
 
                 <div class="d-flex justify-content-between align-items-center mb-2 col-md-11">
                      <li class="list-unstyled m-0 col-md-10">
@@ -41,7 +41,7 @@
                     </button>
                 </div>
 
-                <div class="table-responsive col-md-11" style="height: 75vh;">
+                <div class="table-responsive col-md-11" style="height: 70vh;">
                     <table class="table table-bordered table-hover align-middle">
                         <thead class="table-dark text-center">
                             <tr>
@@ -68,9 +68,9 @@
 
                 <!-- Delete confirmation modal -->
                 <div id="deletesubjects" class="modal fade" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog modal-dialog-top">
                         <div class="modal-content border-0 shadow">
-                            <div class="modal-header bg-danger text-white">
+                            <div class="modal-header bg-linear text-white">
                                 <h5 class="modal-title">Confirm Deletion</h5>
                                 <button type="button" class="btn-close" onclick="CancelJob()" aria-label="Close"></button>
                             </div>
@@ -92,17 +92,17 @@
                     
                 </div>
                 <div class="modal fade" id="addSubjectModal" tabindex="-1" aria-labelledby="addSubjectLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog modal-dialog-top">
                         <div class="modal-content border-0 shadow">
-                        <div class="modal-header bg-primary text-white">
-                            <h5 class="modal-title" id="addSubjectLabel">Add Subject</h5>
+                        <div class="modal-header bg-linear text-white">
+                            <h5 class="modal-title" id="addSubjectLabel">Add Department</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <form action="../../auth/authentications.php" method="post">
                             <div class="modal-body">
                             <input type="hidden" name="department" value="admin">
                             <div class="mb-3">
-                                <label for="subjectInput" class="form-label">Subject Name:</label>
+                                <label for="subjectInput" class="form-label">Department Name:</label>
                                 <input type="text" class="form-control" id="subjectInput" name="department_name" placeholder="e.g. English 101" required>
                             </div>
                             </div>
@@ -119,6 +119,27 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', ()=>{
+            const url = new URL(window.location);
+            const added   = url.searchParams.has('departments');
+            const deleted = url.searchParams.has('deleteds');
+
+            if (added || deleted) {
+                Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: added ? 'success' : 'error',
+                title: added ? 'Department added successfully!' : 'Department deleted successfully!',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                customClass:{popup:'swal2-row-toast'}
+                });
+                /* strip flags so toast doesn’t reappear on refresh */
+                ['departments','deleteds'].forEach(p=>url.searchParams.delete(p));
+                history.replaceState({}, document.title, url);
+            }
+        });
         function deleteSub(id) {
             document.getElementById("jobID").value = id;
             var deleteModal = new bootstrap.Modal(document.getElementById('deletesubjects'));

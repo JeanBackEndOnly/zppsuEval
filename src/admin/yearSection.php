@@ -24,7 +24,7 @@
                 <div class="title mb-4 col-md-11 d-flex justify-content-start mb-4 fadeInAnimation">
                     <label class="text-black fw-bold fs-2 text-muted">YEAR AND SECTION MANAGEMENT</label>
                 </div>
-                <div class="container-fluid col-md-12 d-flex flex-column justify-content-start align-items-center m-0 p-0">
+                <div class="container-fluid col-md-12 d-flex flex-column justify-content-start align-items-center m-0 p-0" style="height: 78vh;">
 
                 <div class="d-flex justify-content-between align-items-center mb-2 col-md-11">
                    <li class="list-unstyled m-0 col-md-10">
@@ -40,7 +40,7 @@
                     </button>
                 </div>
 
-                <div class="table-responsive col-md-11" style="height: 75vh;">
+                <div class="table-responsive col-md-11" style="height: 70vh;">
                     <table class="table table-bordered table-hover align-middle">
                         <thead class="table-dark text-center">
                             <tr>
@@ -80,7 +80,7 @@
                             </div>
                             <div class="modal-footer">
                                 <form action="" id="deleteForm" method="post" class="d-inline">
-                                    <input type="hidden" name="semesterst" value="delete">
+                                    <input type="hidden" name="yearAndSection" value="delete">
                                     <input type="hidden" id="jobID" name="id" value="">
                                     <button type="submit" class="btn btn-danger">Yes</button>
                                 </form>
@@ -123,6 +123,27 @@
     <script src="../../assets/js/hr/hrJ.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', ()=>{
+            const url = new URL(window.location);
+            const added   = url.searchParams.has('yearSection');
+            const deleted = url.searchParams.has('deleteds');
+
+            if (added || deleted) {
+                Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: added ? 'success' : 'error',
+                title: added ? 'Year and Section added successfully!' : 'Department deleted successfully!',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                customClass:{popup:'swal2-row-toast'}
+                });
+                /* strip flags so toast doesn’t reappear on refresh */
+                ['yearSection','deleteds'].forEach(p=>url.searchParams.delete(p));
+                history.replaceState({}, document.title, url);
+            }
+        });
         function deleteSub(id) {
             document.getElementById("jobID").value = id;
             var deleteModal = new bootstrap.Modal(document.getElementById('deletesubjects'));

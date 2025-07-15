@@ -14,7 +14,7 @@
         <div class="col-auto sideNav bg-linear h-100">
             <div class="sideContents" id="sideContents">
                 <div class="profileBox w-100 d-flex flex-column justify-content-center align-items-center mt-2 mb-3">
-                    <?php if($student_info["users_profile"] != '') { ?><img src="../../assets/image/<?= $student_info["users_profile"] ?>" alt="pfp" id="pfpOnTop"><?php }else{ ?>
+                    <?php if($student_info["user_profile"] != '') { ?><img src="../../assets/image/<?= $student_info["user_profile"] ?>" alt="pfp" id="pfpOnTop"><?php }else{ ?>
                     <img src="../../assets/image/Avatar.png" alt="pfp" id="pfpOnTop"><?php } ?>
                     <label class="fw-bold text-white"><?= $student_info["SchoolID"] ?></label>
                     <label class="text-white text-center fw-bold"><?= $student_info["lname"] . ", " . $student_info["fname"]  ?></label>
@@ -55,7 +55,7 @@
                                             <td><?= htmlspecialchars($prof['email']) ?></td>
                                             <td><?= htmlspecialchars($prof['profession']) ?></td>
                                             <td>
-                                                <a href="evaluateProfessor.php?id=<?= $prof['id'] ?>" class="btn btn-success btn-sm w-100">Evaluate</a>
+                                                <a href="evaluateProfessor.php?teacherID=<?= $prof['teacherID'] ?>" class="btn btn-success btn-sm w-100">Evaluate</a>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

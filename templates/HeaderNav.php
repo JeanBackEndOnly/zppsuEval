@@ -93,7 +93,7 @@ $student_info = $info['student_info']; ?>
         </button>
          <ul style="display: none;" id="Faculty" class="hrNavs flex-column p-0 m-0">
             <a class="text-white p-2" href="teachers.php"><p class="m-0"><i class="fa-solid fa-users me-2"></i>Faculty</p></a>
-            <a class="text-white p-2" href="assignedProf.php"><p class="m-0"><i class="fa-solid fa-building-flag me-2"></i>Faculty Evaluation</p></a>
+            <a class="text-white p-2" href="assignedProf.php"><p class="m-0"><i class="fa-solid fa-user-pen me-2"></i>Faculty Evaluation</p></a>
         </ul>
         <button type="submit" onclick="getCurriculum()" class="CurriculumeNav buttonNoBG text-white p-1 px-2 d-flex justify-content-between rounded-2 align-items-center fs-5">
             Curriculum<i class="fa-solid fa-caret-down ms-1" id="iLeft"></i>
@@ -108,8 +108,9 @@ $student_info = $info['student_info']; ?>
             Evaluation<i class="fa-solid fa-caret-down ms-1" id="iLeft"></i>
         </button>
         <ul style="display: none;" id="Eval" class="hrNavs flex-column p-0 m-0">
-            <a class="text-white p-2" href="subjects.php"><p class="m-0"><i class="fa-solid fa-briefcase me-2"></i>Questions</p></a>
-            <a class="text-white p-2" href="departments.php"><p class="m-0"><i class="fa-solid fa-building me-2"></i>Criteria</p></a>
+            <a class="text-white p-2" href="questions.php"><p class="m-0"><i class="fa-solid fa-briefcase me-2"></i>Questions</p></a>
+            <a class="text-white p-2" href="criteria.php"><p class="m-0"><i class="fa-solid fa-building me-2"></i>Criteria</p></a>
+            <a class="text-white p-2" href="scale.php"><p class="m-0"><i class="fa-solid fa-building me-2"></i>Grading Scale</p></a>
         </ul>
     </div>
     <script>
@@ -118,6 +119,7 @@ $student_info = $info['student_info']; ?>
             console.log("button clicked!")
             if(sd.style.display == 'none'){
                 sd.style.display = 'flex';
+                sd.classList.add('fadeInAnimationNav');
             }else{
                 sd.style.display = 'none';
             }
@@ -127,6 +129,7 @@ $student_info = $info['student_info']; ?>
             console.log("button clicked!")
             if(sd.style.display == 'none'){
                 sd.style.display = 'flex';
+                sd.classList.add('fadeInAnimationNav');
             }else{
                 sd.style.display = 'none';
             }
@@ -136,6 +139,7 @@ $student_info = $info['student_info']; ?>
             console.log("button clicked!")
             if(sd.style.display == 'none'){
                 sd.style.display = 'flex';
+                sd.classList.add('fadeInAnimationNav');
             }else{
                 sd.style.display = 'none';
             }

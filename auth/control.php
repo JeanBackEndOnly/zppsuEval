@@ -306,7 +306,7 @@ function getProfActiveEval(){
     $stmt->bindParam(':user_id', $usersID);
     $stmt->execute();
     $departmentID = $stmt->fetch(PDO::FETCH_ASSOC);
-    $getDeptId = $departmentID["department_id"];
+    $getDeptId = $departmentID["department_id"] ?? '';
 
     $query = "SELECT * FROM school_year_semester 
     INNER JOIN professor_school_year_semester ON school_year_semester.id = professor_school_year_semester.school_year_semester_id

@@ -1,5 +1,6 @@
 <?php 
 require_once '../../installer/session.php'; 
+require_once '../../installer/config.php'; 
 require_once '../../auth/view.php';
 include_once '../../auth/control.php';  
 
@@ -28,6 +29,10 @@ $yearSection = $info['yearSection'];
     $usernameNotmatch = false;
     $deleteds = false;
     $professorsAdded = false;
+    $AddQuestion = false;
+    $DeleteQuestion = false;
+    $AddCriteria = false;
+    $DeleteCriteria = false;
     if(isset($_GET['CurrentPass']) && $_GET['CurrentPass'] === 'notMatch'){
         $CurrentPass = true;
     }elseif(isset($_GET['Email']) && $_GET['Email'] === 'registered'){
@@ -42,6 +47,14 @@ $yearSection = $info['yearSection'];
         $deleteds = true;
     }elseif(isset($_GET['professors']) && $_GET['professors'] === 'success'){
         $professorsAdded = true;
+    }elseif(isset($_GET['AddQuestion']) && $_GET['AddQuestion'] === 'success'){
+        $AddQuestion = true;
+    }elseif(isset($_GET['DeleteQuestion']) && $_GET['DeleteQuestion'] === 'success'){
+        $DeleteQuestion = true;
+    }elseif(isset($_GET['AddCriteria']) && $_GET['AddCriteria'] === 'success'){
+        $AddCriteria = true;
+    }elseif(isset($_GET['DeleteCriteria']) && $_GET['DeleteCriteria'] === 'success'){
+        $DeleteCriteria = true;
     }
 ?>
 <!DOCTYPE html>
@@ -69,6 +82,10 @@ $yearSection = $info['yearSection'];
         const usernameNotmatch = <?php echo json_encode($usernameNotmatch); ?>;
         const deleteds = <?php echo json_encode($deleteds); ?>;
         const professorsAdded = <?php echo json_encode($professorsAdded); ?>;
+        const AddQuestion = <?php echo json_encode($AddQuestion); ?>;
+        const DeleteQuestion = <?php echo json_encode($DeleteQuestion); ?>;
+        const AddCriteria = <?php echo json_encode($AddCriteria); ?>;
+        const DeleteCriteria = <?php echo json_encode($DeleteCriteria); ?>;
     </script>
 </head>
 <body>

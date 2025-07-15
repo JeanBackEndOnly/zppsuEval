@@ -181,6 +181,53 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+       document.addEventListener('DOMContentLoaded', () => {
+            const url    = new URL(window.location);
+            const params = url.searchParams;
+
+            /* Decide which toast (if any) to show */
+            let toastCfg = null;
+
+            if (params.has('semester')) {
+                toastCfg = {
+                icon : 'success',
+                title: 'Year and Semester added successfully!'
+                };
+            } else if (params.has('deleteds')) {
+                toastCfg = {
+                icon : 'error',
+                title: 'Year and Semester deleted successfully!'
+                };
+            } else if (params.has('opens')) {
+                toastCfg = {
+                icon : 'success',
+                title: 'Year and Semester opened successfully!'
+                };
+            } else if (params.has('close')) {
+                toastCfg = {
+                icon : 'success',
+                title: 'Year and Semester closed successfully!'
+                };
+            }
+
+            /* Show toast if we picked one */
+            if (toastCfg) {
+                Swal.fire({
+                toast: true,
+                position: 'top-end',
+                ...toastCfg,                // spread the chosen icon & title
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: { popup: 'swal2-row-toast' }
+                });
+
+                /* Remove flags so toast doesn’t re‑appear after refresh */
+                ['semester', 'deleteds', 'opens', 'close'].forEach(p => params.delete(p));
+                history.replaceState({}, document.title, url.toString());
+            }
+        });
+
         function openSemesterModal(id) {
             console.log("Open modal with id:", id);
             const modal = new bootstrap.Modal(document.getElementById('openSemester'));
