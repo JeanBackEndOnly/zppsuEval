@@ -4,7 +4,7 @@
         background-color: #77070A !important;
         font-weight: 500;
     }
-    .FacultyNav, .dashboardNav{
+    .FacultyNav, .dashboardNav, .EvalNav{
        background: linear-gradient(40deg , #77070b62,#77070b62, #77070A, #77070b62, #77070b62) !important;
     }
 </style>
@@ -20,8 +20,8 @@
                 <?= getAdminNav() ?>
             </div>
         </div>
-            <div class="col content p-0 w-100 d-flex flex-column justify-content-start align-items-center">
-                <div class="title mb-4 col-md-11 d-flex justify-content-start mb-4">
+            <div class="col content p-0 w-100 d-flex flex-column justify-content-start align-items-center fadeInAnimation">
+                <div class="title mb-4 col-md-11 d-flex justify-content-start mb-4 fadeInAnimation">
                     <label class="text-black fw-bold fs-2 text-muted">YEAR AND SECTION MANAGEMENT</label>
                 </div>
                 <div class="container-fluid col-md-12 d-flex flex-column justify-content-start align-items-center m-0 p-0">

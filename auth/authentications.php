@@ -599,7 +599,7 @@ if (isset($_POST["passwordChange"]) && $_POST["passwordChange"] == "users") {
         $errors = [];
 
         if (!password_notMatch($confirm_password, $new_password)) {
-            header("Location: ../src/student/settings.php?password=notMatch");
+            header("Location: ../src/student/settings.php?passwordSettings=notsMatch");
             die();
         }
         if (currentPasswordUsers($pdo, $id, $current_password)) {
@@ -613,7 +613,7 @@ if (isset($_POST["passwordChange"]) && $_POST["passwordChange"] == "users") {
         }
 
         updatePasswordUsers($pdo, $id, $new_password);
-        header("Location: ../src/student/settings.php?password=success");
+        header("Location: ../src/student/settings.php?Settingspassword=success");
 
         $stmt = null;
         $pdo = null;

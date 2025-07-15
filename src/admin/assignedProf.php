@@ -67,7 +67,7 @@ $selected_term = $_GET['filter_term'] ?? '';
         background-color: #77070A !important;
         font-weight: 500;
     }
-    .dashboardNav, .CurriculumeNav{
+    .dashboardNav, .CurriculumeNav, .EvalNav{
        background: linear-gradient(40deg , #77070b62,#77070b62, #77070A, #77070b62, #77070b62) !important;
     }
 </style>
@@ -85,10 +85,10 @@ $selected_term = $_GET['filter_term'] ?? '';
         </div>
 
         <div class="col content p-0 d-flex justify-content-center flex-column align-items-center w-100">
-            <div class="title col-md-11 d-flex justify-content-start mb-4">
+            <div class="title col-md-11 d-flex justify-content-start mb-4 fadeInAnimation">
                 <label class="text-black fw-bold fs-2 text-muted">ASSIGN FACULTY</label>
             </div>
-            <div class="container p-0 d-flex flex-column align-items-center m-0">
+            <div class="container p-0 d-flex flex-column align-items-center m-0 fadeInAnimation">
                 <?php if (!empty($_SESSION['flash_message'])): ?>
                     <div class="container mt-3">
                         <div class="alert alert-<?php echo htmlspecialchars($_SESSION['flash_message']['type']); ?> alert-dismissible fade show" role="alert" style="position: absolute; transform: translate(-50%, -50%); top: 10%; left: 50%; z-index: 3;">
@@ -192,7 +192,7 @@ $selected_term = $_GET['filter_term'] ?? '';
                                 <div class="card-header bg-linear text-white rounded-top-2">
                                     <h5 class="mb-0 rounded-2">Assigned Professors</h5>
                         </div>
-                            <div class="card-body table-responsive col-md-11">
+                            <div class="card-body table-responsive col-md-12">
                                 <table class="table table-bordered table-hover table-striped" id="professorTable">
                                     <thead class="table-secondary ">
                                         <tr>

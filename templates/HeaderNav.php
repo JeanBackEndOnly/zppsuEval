@@ -104,6 +104,13 @@ $student_info = $info['student_info']; ?>
             <a class="text-white p-2" href="semester.php"><p class="m-0"><i class="fa-solid fa-calendar me-2"></i>Academic Year</p></a>
             <a class="text-white p-2" href="yearSection.php"><p class="m-0"><i class="fa-solid fa-building-flag me-2"></i>Year and Section</p></a>
         </ul>
+         <button type="submit" onclick="getEval()" class="EvalNav buttonNoBG mt-1 text-white p-1 px-2 d-flex justify-content-between rounded-2 align-items-center fs-5">
+            Evaluation<i class="fa-solid fa-caret-down ms-1" id="iLeft"></i>
+        </button>
+        <ul style="display: none;" id="Eval" class="hrNavs flex-column p-0 m-0">
+            <a class="text-white p-2" href="subjects.php"><p class="m-0"><i class="fa-solid fa-briefcase me-2"></i>Questions</p></a>
+            <a class="text-white p-2" href="departments.php"><p class="m-0"><i class="fa-solid fa-building me-2"></i>Criteria</p></a>
+        </ul>
     </div>
     <script>
         function getFaculty(){
@@ -124,6 +131,15 @@ $student_info = $info['student_info']; ?>
                 sd.style.display = 'none';
             }
         }
+        function getEval(){
+            const sd = document.getElementById("Eval");
+            console.log("button clicked!")
+            if(sd.style.display == 'none'){
+                sd.style.display = 'flex';
+            }else{
+                sd.style.display = 'none';
+            }
+        }
     </script>
 
 <?php } ?>
@@ -131,6 +147,9 @@ $student_info = $info['student_info']; ?>
 <?php function getAdminHeader() { ?>
 
     <div class="header bg-linear w-100 d-flex flex-row justify-content-between mb-1">
+        <div class="burger" style="display: none;">
+            <button type="button" style="background: none; border: none;" onclick="burgerButtonAdmin()"><i class="fa-solid fa-bars fs-3 ms-2 text-white"></i></button>
+        </div>
         <div class="logo" style="display: flex; height: 100%; align-items: center;">
             <img src="../../assets/image/zppsu-logo.png" alt="pfp" id="pfpOnTop" class="ms-4 headerImg">
             <h3 id="userTitle" class="text-white m-0 ms-2">ZPPSU EVALUATION SYSTEM</h3>
@@ -150,9 +169,30 @@ $student_info = $info['student_info']; ?>
                 sd.style.display = 'none';
             }
         }
+        let isShifted = false;
+        function burgerButtonAdmin() {
+                const sidebar = document.querySelector(".sideNav");
+                if (!sidebar) {
+                    console.warn("Element with class 'sideNav' not found.");
+                    return;
+                }
+
+                sidebar.style.display = 'flex';
+                sidebar.style.flexDirection = 'column';
+                sidebar.style.transition = 'transform 0.45s cubic-bezier(.4,0,.2,1)';
+                sidebar.style.willChange = 'transform';
+
+                if (!isShifted) {
+                    sidebar.style.transform = 'translateX(0)';
+                } else {
+                    sidebar.style.transform = 'translateX(-50rem)';
+                }
+
+                isShifted = !isShifted;
+            }
         </script>
-            <div class="profileMenu bg-linearOne shadow flex-column rounded-2 w-auto h-auto p-2" id="profileMenu" style="display: none; z-index: 5 !importantl">
-                <li id="borderBottom" class="m-0 mb-2 mt-1"><a href="settings.php"><p class="m-0"><i class="fa-solid fa-gear me-2"></i>SETTINGS</p></a></li>
+            <div class="profileMenu bg-linearOne shadow flex-column rounded-2 w-auto h-auto p-3" id="profileMenu" style="display: none; z-index: 5 !importantl">
+                <li id="borderBottom mb-1" class="m-0 mb-2 mt-1"><a href="settings.php"><p class="m-0"><i class="fa-solid fa-gear me-2"></i>SETTINGS</p></a></li>
                 <li class="m-0 mb-1"><a href="../logout.php" class="m-0" id="l"><p class="m-0"><i class="fa-solid fa-right-from-bracket"></i>LOGOUT</p></a></li>
             </div>
         </div>

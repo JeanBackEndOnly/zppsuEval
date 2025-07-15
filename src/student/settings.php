@@ -23,7 +23,7 @@
             <div class="title m-0 col-md-11 d-flex justify-content-start mb-4">
                 <label class="text-black fw-bold fs-2 text-muted">SETTINGS</label>
             </div>
-            <div class="row d-flex col-md-12 col-12 align-items-center justify-content-center p-0 m-0 gap-3">
+            <div class="row d-flex col-md-12 col-12 align-items-start justify-content-center p-0 m-0 gap-3">
                 <div class="col-md-5 col-11 p-0 m-0 shadow rounded-2 p-3 ms-2 bg-linear">
                     <label class="ms-2 fw-bold fs-5 text-white mb-3">Change password here</label>
                     <form action="../../auth/authentications.php" method="post" class="w-100 d-flex flex-column px-2">
@@ -103,19 +103,19 @@
             customClass: { popup: 'swal2-row-toast' }
             });
             removeUrlParams(['CurrentPass']);
-        }else if (Email) {
+        }else if (Settingspassword) {
             console.log("Showing updateReq toast");
             Swal.fire({
             toast: true,
             position: 'top-end',
-            icon: 'error',
-            title: 'Email already registered!.',
+            icon: 'success',
+            title: 'Paasword changed successfully!.',
             showConfirmButton: false,
             timer: 3000,
             timerProgressBar: true,
             customClass: { popup: 'swal2-row-toast' }
             });
-            removeUrlParams(['Email']);
+            removeUrlParams(['Settingspassword']);
         }else if (Password) {
             console.log("Showing updateReq toast");
             Swal.fire({

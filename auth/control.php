@@ -318,4 +318,16 @@ function getProfActiveEval(){
     $professor = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return ['professor' => $professor];
 }
-
+function getProfProfile(){
+    $pdo = db_connect();
+    $teacherID = $_GET["id"] ?? '';
+    $query = "SELECT * FROM professor 
+    INNER JOIN professor_school_year_semester ON professor.id = professor_school_year_semester.professor_id 
+    INNER JOIN department ON professor.department_id  = department.id
+    WHERE teacherID = :teacherID";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":teacherID", $teacherID);
+    $stmt->execute();
+    $facultyInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+    return ['facultyInfo' => $facultyInfo];
+}

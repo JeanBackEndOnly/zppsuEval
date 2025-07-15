@@ -10,11 +10,11 @@
                                 <img src="../assets/image/zppsuLogo.png" alt="" style="width: 120px; height: 120px;">
                             </div>
                             <div class="card-headers">
-                                <h1 class="fs-2 text-white p-0 text-center" style="font-family: 'Poppins', sans-serif; background:none; padding-top: 2rem;">ZPPSU EVALUATION SYSTEM</h1>
+                                <h1 class="fs-3 text-white p-0 text-center" style="font-family: 'Poppins', sans-serif; background:none; padding-top: 2rem;">ZPPSU EVALUATION SYSTEM</h1>
                             </div>
                         </div>
                         <div class="card-headers w-100 d-flex justify-content-start">
-                            <h4 class="text-center ms-3" style="font-family: 'Poppins', sans-serif; background:none;">Login</h4>
+                            <h4 class="text-center ms-3 mt-1" style="font-family: 'Poppins', sans-serif; background:none;">Login</h4>
                         </div>
                         <div class="card-body w-100 m-0 px-3 py-1">
                             <form action = "../login/login.php" method = "post" class="col-md-12 col-12 mx-auto">

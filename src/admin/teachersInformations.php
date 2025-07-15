@@ -1,133 +1,48 @@
-<?php include_once '../../auth/control.php'; $info = getUsersInfo();
-    $admin_info = $info['admin_info'];
-    $gradeInnformation = $info['gradeInnformation'];
-    $subjectsProf = $info['subjectsProf'];
-    $professor = $info['professor'];
-    $feedback = $info['feedback'];
-    ?>
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROFILE</title>
-    <!-- <link rel="stylesheet" href="../../assets/css/main_frontend.css?v=<?php echo time(); ?>"> -->
-    <link rel="stylesheet" href="../../assets/css/hr.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-      @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
-    </style>
-    <script src="../../assets/js/main.js"></script>
-</head>
-<body>
-
-<div class="sideNav">
+<?php include '../../templates/Uheader.php'; include '../../templates/HeaderNav.php'; ?>
+<style>
+    .FacultyNav, .CurriculumeNav, .dashboardNav, .EvalNav{
+        background: linear-gradient(40deg , #77070b62,#77070b62, #77070A, #77070b62, #77070b62) !important;
+    }
+</style>
+<div class="main w-100 h-100 d-flex flex-column">
+    <?= getAdminHeader() ?>
+    <div class="row w-100 p-0 m-0">
+        <div class="col-auto sideNav bg-linear h-100">
             <div class="sideContents" id="sideContents">
-                <div class="profileBox">
-                <img src="../../assets/image/zppsu-logo.png" alt="pfp" id="pfpOnTop">
-                    <h4>Since 1913</h4>
-                    <p>Zamboanga Peninsula Region IX</p>
+                <div class="profileBox w-100 d-flex flex-column justify-content-center align-items-center mt-2 mb-3">
+                    <img src="../../assets/image/admin.png" alt="pfp" id="pfpOnTop">
+                    <h5 class="text-white">ADMIN</h5>
                 </div>
-                <div class="menuBox">
-                    <ul>
-                       <a href="dashboard.php" id="dashboard-a"><button id="buttonDashboard"><i class="fa-solid fa-house-user"></i>DASHBOARD</button></a>
-                        <button type="submit" onclick="getHrNavs()">Faculty & Curriculum<i class="fa-solid fa-caret-down" id="iLeft"></i></button>
-                        <ul style="display: none;" id="hrNavs" class="hrNavs">
-                            <a href="teachers.php"><p><i class="fa-solid fa-users"></i>Faculty</p></a>
-                            <a href="subjects.php"><p><i class="fa-solid fa-briefcase"></i>Subjects</p></a>
-                            <a href="departments.php"><p><i class="fa-solid fa-building"></i>Departments</p></a>
-                            <a href="semester.php"><p><i class="fa-solid fa-calendar"></i>Academic Year</p></a>
-                            <a href="yearSection.php"><p><i class="fa-solid fa-building-flag"></i>Year and Section</p></a>
-                           <a href="assignedProf.php"><p><i class="fa-solid fa-users-gear"></i>Faculty Evaluation</p></a>
-                        </ul>
-                    </ul>
+                <?= getAdminNav() ?>
+            </div>
+        </div>
+
+        <div class="col content p-0 d-flex flex-column justify-content-start align-items-center fadeInAnimation">
+            <a href="teachers.php" class="col-md-11 d-flex justify-content-start fw-bold">Go back to faculty management</a>
+            <div class="title m-0 col-md-11 d-flex justify-content-start mb-4 fadeInAnimation">
+                <label class="text-black fw-bold fs-2 text-muted">FACULTY INFORMATION</label>
+            </div>
+            <div class="d-flex flex-row col-md-12 col-12 align-items-center justify-content-evenly">
+                <div class="profile bg-linear d-flex flex-column col-md-4 col-11 align-items-center justify-content-center py-3 rounded-2">
+                    <?php if($facultyInfo["professor_profile"] !== null){ ?>
+                    <img src="../../assets/image/uploads/<?= $facultyInfo["professor_profile"]?>" alt="no" style="height: 150px; width: 150px; border-radius: 50%;" class="m-0 p-0">
+                    <?php }else{ ?>
+                    <img src="../../assets/image/Avatar.png" alt="no" style="height: 150px; width: 150px; border-radius: 50%;">
+                    <?php } ?>
+                    <label class="text-white fw-bold"><?= $facultyInfo["teacherID"] ?? '' ?></label>
+                    <label class="text-white fw-bold"><?= $facultyInfo["lname"] . ", " . $facultyInfo["fname"] . " " . $facultyInfo["mname"] ?></label>
+                    <label class="text-white fw-bold"><?= $facultyInfo["department_name"] . " - DEPARTMENT" ?></label>
+                    <label class="text-white fw-bold"><?= $facultyInfo["profession"] ?></label>
+                    <label class="text-white fw-bold"><?= $facultyInfo["email"] ?></label>
+                </div>
+                <div class="informations col-md-7 col-11">
+                    <h4 class="text-muted fw-bold">EVALUATION INFROMATIONS</h4>
+                    
                 </div>
             </div>
         </div>
-    
-    <div class="columnFlex">
-        <div class="header">
-        <div class="logo" style="display: flex; height: 100%; align-items: center;">
-            <!-- <img src="../../assets/image/zppsu-logo.png" alt="pfp" id="pfpOnTop" style="height: 50px; width: 50px; border-radius: 50%; margin-right: 10px;"> -->
-            <h3 id="userTitle">ZPPSU EVALUATION SYSTEM</h3>
-        </div>
-        <div class="otherButtons">
-            <button type="submit" onclick="profileMenu()" id="buttonpfpmenu">
-                <img src="../../assets/image/zppsu-logo.png" alt="pfp" id="pfpOnTop">
-                <p><?php echo $admin_info["firstname"] ." "; ?><i class="fa-solid fa-caret-down"></i></p>
-            </button>
+    </div>
+</div>
+
+<?php include '../../templates/Ufooter.php'; ?>
             
-            <div class="profileMenu" id="profileMenu" style="display: none;">
-                <li id="borderBottom"><a href="settings.php"><p><i class="fa-solid fa-gear"></i>SETTINGS</p></a></li>
-                <li><a href="../logout.php" id="l"><p><i class="fa-solid fa-right-from-bracket"></i>LOGOUT</p></a></li>
-            </div>
-        </div>
-    </div>
-        <div class="contents">
-            <?php
-                    echo '<div class="columnProfile">';
-                        echo '<div class="rowProfile">';
-                            echo '<div class="profileEvaluatee">';
-                                echo '<img src="../../assets/image/upload/' . $professor["professor_Profile"] . '" alt="">';
-                                echo '<p>' . $professor["teacherID"] . '</p>';
-                            echo '</div>';
-                            echo '<div class="evaluateeInformation">';
-                                echo '<p id="emps-name">Name: '. $professor["Lname"] . ", " . $professor["Fname"] . " " . $professor["Mname"] .'</p>';
-                                echo '<p id="emps-name">Job Title: ' . $professor["prfession"] . '</p>';
-                                echo '<p id="emps-name">Subject: '. $subjectsProf["subjects"] . '</p>';
-                                echo '<p id="emps-name">Department: '. $professor["department"] . ' DEPARTMENT</p>';
-                            echo '</div>';
-                        echo '</div>';
-                        echo '<div class="totalEvaluationRow">';
-                            echo '<div class="headerEvaluation">';
-                                echo '<h2>Average Score</h2>';
-                                echo '<h2>Total Score</h2>';
-                                echo '<h2>Evaluation Count</h2>';
-                            echo '</div>';
-
-                            if (!empty($gradeInnformation)) {
-                                $row = $gradeInnformation[0]; 
-                                echo '<div class="reultEvaluation">';
-                                    echo '<p class="emp-job">' . $row["average_score"] . '</p>';
-                                    echo '<p class="emp-job">' . $row["total_score"] . '</p>';
-                                    echo '<p class="emp-dept">' . $row["evaluation_count"] . '</p>';
-                                echo '</div>';
-                            } else {
-                                echo '<p>Not Evaluated yet!</p>';
-                            }
-                        echo '</div>'; 
-
-                    echo '<div class="editButton">';
-                        echo '<a href="edit.php?profID=' . $professor["id"] . '"><button id="buttonnani">Edit</button></a>';
-                    echo '</div>';
-                    echo '<div class="feedbackStudents">';
-                        echo '<h3>STUDENT FEED BACK</h3>';
-                         echo '<div class="feedBackHeigt">';
-                         if (!empty($feedback)) {
-                            foreach($feedback as $row){
-                                echo '<div class="feedback">';
-                                echo '<p>' . $row["feedback"] . '</p>';
-                                echo '</div>';
-                            }
-                        } else {
-                            echo '<div class="feedback">';
-                            echo '<p>No Evaluation and Comment yet!</p>';
-                            echo '</div>';
-                        }
-
-                            
-                        echo '</div>';
-                    echo '</div>';
-            ?>
-        </div>
-        <?php
-            approvedSuccess();
-        ?>
-    </div>
-    <script src="../../assets/js/hr/hrLL.js"></script> 
-</body>
-</html>

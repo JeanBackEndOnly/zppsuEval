@@ -4,7 +4,7 @@
         background-color: #77070A !important;
         font-weight: 500;
     }
-    .CurriculumeNav, .dashboardNav{
+    .CurriculumeNav, .dashboardNav, .EvalNav{
         background: linear-gradient(40deg , #77070b62,#77070b62, #77070A, #77070b62, #77070b62) !important;
     }
 </style>
@@ -21,8 +21,8 @@
             </div>
         </div>
 
-        <div class="col content p-0 d-flex flex-column align-items-center">
-          <div class="title mb-4 col-md-11 d-flex justify-content-start">
+        <div class="col content p-0 d-flex flex-column align-items-center fadeInAnimation">
+          <div class="title mb-4 col-md-11 d-flex justify-content-start fadeInAnimation">
                 <label class="text-black fw-bold fs-2 text-muted">FACULTY MANAGEMENT</label>
             </div>
             <div class="d-flex justify-content-between align-items-center col-md-11 mb-2" style="margin-top: 1rem;">
@@ -61,8 +61,8 @@
                         <td><?= htmlspecialchars($row["subject_names"]) ?></td>
                         <td><?= htmlspecialchars($row["department_name"]) ?> Department</td>
                         <td>
-                            <a href="teachersInformations.php?id=<?= $row["id"] ?>" class="btn btn-primary btn-sm mb-1 w-100">View</a>
-                            <button type="button" class="btn btn-danger btn-sm w-100" onclick="openDeleteForm(<?= $row["id"] ?>)">Delete</button>
+                            <a href="teachersInformations.php?id=<?= $row["teacherID"] ?>" class="btn btn-primary btn-sm mb-1 w-100">View</a>
+                            <button type="button" class="btn btn-danger btn-sm w-100" onclick="openDeleteForm(<?= $row['id'] ?>)">Delete</button>
                         </td>
                         </tr>
                     <?php endforeach; ?>
@@ -95,7 +95,7 @@
                 <div class="modal-content shadow-lg">
                     
                 <div class="modal-header bg-linear text-white">
-                    <h5 class="modal-title ms-auto" id="addEvaluateeLabel">Add Evaluatee</h5>
+                    <h5 class="modal-title ms-auto w-100 text-start" id="addEvaluateeLabel">ADD EVALUATEE</h5>
                     <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
             <div class="col-12 text-end">
@@ -182,6 +182,40 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (deleteds) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Faculty deleted successfully!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['deleteds']);
+        }else if (professorsAdded) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Faculty added successfully!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['professors']);
+        }
+        function removeUrlParams(params) {
+            const url = new URL(window.location);
+            params.forEach(param => url.searchParams.delete(param));
+            window.history.replaceState({}, document.title, url.toString());
+        }
+    });
     function cancelAction(){
         document.getElementById("hiddenForm").style.display = "none";
     }

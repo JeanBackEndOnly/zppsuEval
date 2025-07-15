@@ -4,7 +4,7 @@
         background-color: var(--new);
         font-weight: 500;
     }
-    .FacultyNav, .CurriculumeNav{
+    .FacultyNav, .CurriculumeNav, .EvalNav{
         background: linear-gradient(40deg , #77070b62,#77070b62, #77070A, #77070b62, #77070b62) !important;
     }
 </style>
@@ -21,11 +21,11 @@
             </div>
         </div>
 
-        <div class="col content p-0 d-flex flex-column justify-content-start align-items-center">
-            <div class="title m-0 col-md-11 d-flex justify-content-start mb-4">
+        <div class="col content p-0 d-flex flex-column justify-content-start align-items-center fadeInAnimation">
+            <div class="title m-0 col-md-11 col-11 d-flex justify-content-start mb-4 fadeInAnimation">
                 <label class="text-black fw-bold fs-2 text-muted">DASHBOARD</label>
             </div>
-            <div class="rowCount d-flex h-auto flex-wrap col-md-11 align-items-center">
+            <div class="rowCount d-flex h-auto flex-wrap col-md-11 col-12 align-items-center justify-content-start">
                 <div class="evaluatorsCount rounded-2 shadow me-2 my-2 col-md-4 col-11 h-auto p-2 px-3 bg-linear">
                     <h2 class="m-0 text-white">TOTAL STUDENTS</h2>
                     <h1 class="m-0 text-white"><?php echo $resultCount;?></h1>
@@ -37,7 +37,7 @@
                     <p class="m-0 text-white">Teachers</p>
                 </div>
             </div>
-            <div class="containerDashboard d-flex justify-content-start align-items-center col-md-11">
+            <div class="containerDashboard d-flex justify-content-start align-items-center col-md-11 col-11">
 
                 <div class="card shadow-sm border-start border-2 border-info">
                     <div class="card-body text-start">

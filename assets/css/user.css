@@ -9,7 +9,7 @@
     --left: #ffffff;
     --new: #77070A;
     --middle: #f10000a9;
-    --middleOne: #f10000;
+    --middleOne: #ff5f5f;
     --lightBlack: #242424;
     --sideNav: #343A40;
 }
@@ -71,6 +71,14 @@ a{
 }
 .otherButtons{
     margin-right: 2rem;
+}
+/* ========== ANIMATION =============== */
+@keyframes fadeInRight{
+    from{transform: translateY(-1rem); opacity: 0;};
+    to{transform: translateY(0); opacity: 1;};
+}
+.fadeInAnimation{
+    animation: fadeInRight 1s ease-in-out;
 }
 @media (max-width: 576px) {
     .sideNav {
