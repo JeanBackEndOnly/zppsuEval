@@ -40,6 +40,34 @@
                     </div>
                 </div>
             </div>
+            <?php
+            $pdo = db_connect();
+                $query = "SELECT DISTINCT professor.*, department.*
+                        FROM professor
+                        INNER JOIN grade ON professor.id = grade.professor_id
+                        INNER JOIN department ON professor.department_id  = department.id
+                        WHERE grade.evaluator_id = :evaluator_id";
+                $stmt = $pdo->prepare($query);
+                $stmt->bindParam(':evaluator_id', $_SESSION["user_id"]);
+                $stmt->execute();
+                $evaluatedProfessors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            ?>
+             <h3 class="text-muted py-2 pt-4 ps-4">EVELUATED TEACHERS</h3>
+             <div class="col-md-12 col-12 d-flex flex-wrap justify-content-center">
+                <?php foreach($evaluatedProfessors as $prof) : ?>
+                    <div class="col-md-3 p-2 m-2 rounded-2 col-11 d-flex bg-linear">
+                        <div class="justify-content-center align-items-center d-flex col-md-4 col-4">
+                            <img src="../../assets/image/uploads/<?= $prof["professor_profile"] ?>" alt="professor image" class="rounded-circle" style="width: 100px; height: 100px;">
+                        </div>
+                        <div class="justify-content-center align-items-start justify-content-start col-md-8 col-8 d-flex flex-column">
+                            <span class="text-white fw-bold"><?= $prof["lname"] . ", " . $prof["fname"] ?></span>
+                            <span class="text-white fw-bold"><?= $prof["teacherID"] ?></span>
+                            <span class="text-white fw-bold"><?= $prof["department_name"] . " - DEPARTMENT" ?></span>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+             </div>
         </div>
     </div>
 </div>

@@ -30,8 +30,8 @@
                 </div>
             </div>
             <div class="containerDashboard p-0 m-0 px-2 col-md-12 col-md-11 d-flex align-items-center justify-content-center">
-                <div class="card p-0 m-0 shadow col-md-12 p-2">
-                    <div class="row m-0 d-flex align-items-center justify-content-center noScroll col-md-12 col-12" style="height: 80vh; overflow-y: scroll; ">
+                <div class="card p-0 m-0 shadow col-md-12 p-2" style="height: 78vh;">
+                    <div class="row m-0 d-flex align-items-center justify-content-center noScroll col-md-12 col-12" style="height: 75vh; overflow-y: scroll; ">
                         <?php if (!empty($professor)): ?>
                             <?php foreach ($professor as $prof): ?>
                                 <div class="col d-flex flex-row flex-wrap align-items-center justify-content-center m-0 p-0 col-md-4 col-11">

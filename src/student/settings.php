@@ -10,7 +10,7 @@
         <div class="col-auto sideNav bg-linear h-100">
             <div class="sideContents" id="sideContents">
                 <div class="profileBox w-100 d-flex flex-column justify-content-center align-items-center mt-2 mb-3">
-                    <?php if($student_info["users_profile"] != '') { ?><img src="../../assets/image/<?= $student_info["users_profile"] ?>" alt="pfp" id="pfpOnTop"><?php }else{ ?>
+                    <?php if($student_info["user_profile"] != '') { ?><img src="../../assets/image/<?= $student_info["user_profile"] ?>" alt="pfp" id="pfpOnTop"><?php }else{ ?>
                     <img src="../../assets/image/Avatar.png" alt="pfp" id="pfpOnTop"><?php } ?>
                     <label class="fw-bold text-white"><?= $student_info["SchoolID"] ?></label>
                     <label class="text-white text-center fw-bold"><?= $student_info["lname"] . ", " . $student_info["fname"]  ?></label>
@@ -52,7 +52,7 @@
                             <img src="../../assets/image/Avatar.png" alt="" style="height: 150px; width: 150px; border-radius: 50%;">
                         </label>
                         <label for="" class="text-white fw-bold">Profile Picture</label>
-                        <input type="file" style="display: none;" name="users_profile" id="user_profile" value="<?= $student_info["users_profile"] ?>">
+                        <input type="file" style="display: none;" name="users_profile" id="user_profile" value="<?= $student_info["user_profile"] ?>">
                     </div>
                     <div class="usersInfo col-md-12 col-12 d-flex flex-row flex-wrap justify-content-evenly">
                         <div class="m-1 col-md-5 col-11">
