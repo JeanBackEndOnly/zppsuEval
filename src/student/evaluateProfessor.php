@@ -1,9 +1,4 @@
 <?php
-/* ==============================================================
-   Evaluation Form with auto-updating grade, total_grade, and
-   evaluator_group_summary tables using ON DUPLICATE KEY UPDATE
-   ============================================================== */
-
 include '../../templates/Uheader.php';
 include '../../templates/HeaderNav.php';
 $pdo = db_connect();
@@ -12,9 +7,15 @@ if (!isset($_GET['teacherID'])) {
     header('Location: dashboard.php');
     exit;
 }
+
 $teacherID = urldecode($_GET['teacherID']);
 
-$profStmt = $pdo->prepare("SELECT p.*, d.department_name FROM professor p LEFT JOIN department d ON p.department_id = d.id WHERE p.teacherID = ?");
+$profStmt = $pdo->prepare("
+    SELECT p.*, d.department_name 
+    FROM professor p 
+    LEFT JOIN department d ON p.department_id = d.id 
+    WHERE p.teacherID = ?
+");
 $profStmt->execute([$teacherID]);
 $prof = $profStmt->fetch(PDO::FETCH_ASSOC) ?: die('Professor not found');
 
@@ -26,48 +27,130 @@ foreach ($qRows as $row) {
 }
 $scale = $pdo->query("SELECT * FROM grading_scale ORDER BY score_value DESC")->fetchAll(PDO::FETCH_ASSOC);
 
-$subjectStmt = $pdo->prepare("SELECT s.id, s.subject_name FROM professor_subject ps JOIN subjects s ON ps.subject_id = s.id WHERE ps.professor_id = ?");
+$subjectStmt = $pdo->prepare("
+    SELECT s.id, s.subject_name 
+    FROM professor_subject ps 
+    JOIN subjects s ON ps.subject_id = s.id 
+    WHERE ps.professor_id = ?
+");
 $subjectStmt->execute([$prof['id']]);
 $subjects = $subjectStmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Evaluation logic
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_eval'])) {
     $termId = $pdo->query("SELECT id FROM school_year_semester WHERE status = 'open' LIMIT 1")->fetchColumn();
     if (!$termId) die('No active term.');
 
     $subjectId = $_POST['subject_id'] ?? null;
     if ($subjectId === "") $subjectId = null;
+
+    // Assuming $student_info['user_id'] is available from your session or auth system
     $studentId = $student_info['user_id'];
 
-    $dup = $pdo->prepare("SELECT 1 FROM grade WHERE professor_id = ? AND evaluator_id = ? AND evaluator_type = 'STUDENT' AND school_year_semester_id = ? AND subject_id <=> ? LIMIT 1");
+    // Prevent duplicate evaluations per student
+    $dup = $pdo->prepare("
+        SELECT 1 FROM grade 
+        WHERE professor_id = ? AND evaluator_id = ? 
+        AND evaluator_type = 'STUDENT' 
+        AND school_year_semester_id = ? 
+        AND subject_id <=> ?
+        LIMIT 1
+    ");
     $dup->execute([$prof['id'], $studentId, $termId, $subjectId]);
     if ($dup->fetchColumn()) {
         header("Location: evaluateProfessor.php?teacherID=" . urlencode($teacherID) . "&already=1");
         exit;
     }
 
-    $pdo->beginTransaction();
-    $stmt = $pdo->prepare("INSERT INTO grade (professor_id, evaluator_id, evaluator_type, subject_id, questionnaire_id, school_year_semester_id, score) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    foreach ($_POST['response'] as $qId => $score) {
-        $stmt->execute([$prof['id'], $studentId, 'STUDENT', $subjectId, $qId, $termId, (int)$score]);
+    try {
+        // Start transaction
+        $pdo->beginTransaction();
+
+        // Insert individual grades
+        $stmt = $pdo->prepare("
+            INSERT INTO grade 
+            (professor_id, evaluator_id, evaluator_type, subject_id, questionnaire_id, school_year_semester_id, score) 
+            VALUES (?, ?, 'STUDENT', ?, ?, ?, ?)
+        ");
+        foreach ($_POST['response'] as $qId => $score) {
+            $stmt->execute([$prof['id'], $studentId, $subjectId, $qId, $termId, (int)$score]);
+        }
+
+        // Aggregate scores across all subjects
+        $aggregated = $pdo->prepare("
+            SELECT 
+                AVG(score) AS avg_score, 
+                SUM(score) AS total_score, 
+                COUNT(*) AS eval_count 
+            FROM grade 
+            WHERE professor_id = ? 
+            AND school_year_semester_id = ? 
+            AND evaluator_type = 'STUDENT'
+        ");
+        $aggregated->execute([$prof['id'], $termId]);
+        $result = $aggregated->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result || $result['eval_count'] == 0) {
+            $result = [
+                'avg_score' => null,
+                'total_score' => 0,
+                'eval_count' => 0
+            ];
+        }
+
+        // Insert/update total_grade
+        $totalGradeStmt = $pdo->prepare("
+            INSERT INTO total_grade 
+                (professor_id, subject_id, school_year_semester_id, average_score, total_score, evaluation_count, updated_at) 
+            VALUES (?, NULL, ?, ?, ?, ?, CURRENT_TIMESTAMP) 
+            ON DUPLICATE KEY UPDATE 
+                average_score = VALUES(average_score),
+                total_score = VALUES(total_score),
+                evaluation_count = VALUES(evaluation_count),
+                updated_at = CURRENT_TIMESTAMP
+        ");
+        $totalGradeStmt->execute([
+            $prof['id'], $termId,
+            $result['avg_score'], $result['total_score'], $result['eval_count']
+        ]);
+
+        // Get evaluator group weight for STUDENT group
+        $weightStmt = $pdo->prepare("SELECT weight_percent FROM evaluator_group_weight WHERE evaluator_type = 'STUDENT' LIMIT 1");
+        $weightStmt->execute();
+        $weightPercent = $weightStmt->fetchColumn();
+
+        // Insert/update evaluator_group_summary
+        if ($weightPercent !== false && $result['avg_score'] !== null) {
+            $equivalentPoint = round($result['avg_score'] * ($weightPercent / 100), 2);
+            $summaryStmt = $pdo->prepare("
+                INSERT INTO evaluator_group_summary 
+                    (professor_id, subject_id, school_year_semester_id, evaluator_type, average_score, weight_percent, equivalent_point, created_at) 
+                VALUES (?, NULL, ?, 'STUDENT', ?, ?, ?, CURRENT_TIMESTAMP) 
+                ON DUPLICATE KEY UPDATE 
+                    average_score = VALUES(average_score),
+                    weight_percent = VALUES(weight_percent),
+                    equivalent_point = VALUES(equivalent_point),
+                    created_at = CURRENT_TIMESTAMP
+            ");
+            $summaryStmt->execute([
+                $prof['id'], $termId,
+                $result['avg_score'], $weightPercent, $equivalentPoint
+            ]);
+        }
+
+        // Commit transaction
+        $pdo->commit();
+
+        header("Location: evaluateProfessor.php?teacherID=" . urlencode($teacherID) . "&saved=1");
+        exit;
+
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+        die("Database error: " . $e->getMessage());
     }
-
-    $sum = $pdo->prepare("INSERT INTO total_grade (professor_id, subject_id, school_year_semester_id, average_score, total_score, evaluation_count) SELECT :prof_id, :sub_id, :term_id, AVG(score), SUM(score), COUNT(*) FROM grade WHERE professor_id = :prof_id AND subject_id <=> :sub_id AND school_year_semester_id = :term_id GROUP BY professor_id, subject_id, school_year_semester_id ON DUPLICATE KEY UPDATE average_score = VALUES(average_score), total_score = VALUES(total_score), evaluation_count = VALUES(evaluation_count), updated_at = CURRENT_TIMESTAMP");
-    $sum->execute([':prof_id' => $prof['id'], ':sub_id' => $subjectId, ':term_id' => $termId]);
-
-    $weightStmt = $pdo->prepare("SELECT weight_percent FROM evaluator_group_weight WHERE evaluator_type = 'STUDENT' LIMIT 1");
-    $weightStmt->execute();
-    $weightPercent = $weightStmt->fetchColumn();
-
-    if ($weightPercent !== false) {
-        $summaryStmt = $pdo->prepare("INSERT INTO evaluator_group_summary (professor_id, subject_id, school_year_semester_id, evaluator_type, average_score, weight_percent, equivalent_point) SELECT :prof_id, :sub_id, :term_id, 'STUDENT', AVG(score), :weight, ROUND(AVG(score) * (:weight / 100), 2) FROM grade WHERE professor_id = :prof_id AND subject_id <=> :sub_id AND school_year_semester_id = :term_id AND evaluator_type = 'STUDENT' GROUP BY professor_id, subject_id, school_year_semester_id ON DUPLICATE KEY UPDATE average_score = VALUES(average_score), weight_percent = VALUES(weight_percent), equivalent_point = VALUES(equivalent_point), created_at = CURRENT_TIMESTAMP");
-        $summaryStmt->execute([':prof_id' => $prof['id'], ':sub_id' => $subjectId, ':term_id' => $termId, ':weight' => $weightPercent]);
-    }
-
-    $pdo->commit();
-    header("Location: evaluateProfessor.php?teacherID=" . urlencode($teacherID) . "&saved=1");
-    exit;
 }
 ?>
+
 
 <style>
     .dashboardNav { background: var(--new); font-weight: 500; }

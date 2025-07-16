@@ -88,14 +88,14 @@ $student_info = $info['student_info']; ?>
 
     <div class="menuBox h-75 d-flex flex-column">
         <a href="dashboard.php" id="dashboard-a" class="text-white dashboardNav mb-1 p-2 col-md-12 rounded-1"><i class="fa-solid fa-house-user me-2"></i>DASHBOARD</a>
-        <button type="submit" onclick="getFaculty()" class="FacultyNav buttonNoBG text-white p-1 px-2 d-flex justify-content-between rounded-2 align-items-center fs-5 mb-1">
+        <button type="submit" onclick="getFaculty()" class="FacultyNav buttonNoBG text-white p-1 px-2 d-flex justify-content-between rounded-2 align-items-center fs-5 mb-1" style="transition: .5s ease-in-out;">
             Faculty<i class="fa-solid fa-caret-down ms-1" id="iLeft"></i>
         </button>
          <ul style="display: none;" id="Faculty" class="hrNavs flex-column p-0 m-0">
             <a class="text-white p-2" href="teachers.php"><p class="m-0"><i class="fa-solid fa-users me-2"></i>Faculty</p></a>
             <a class="text-white p-2" href="assignedProf.php"><p class="m-0"><i class="fa-solid fa-user-pen me-2"></i>Faculty Evaluation</p></a>
         </ul>
-        <button type="submit" onclick="getCurriculum()" class="CurriculumeNav buttonNoBG text-white p-1 px-2 d-flex justify-content-between rounded-2 align-items-center fs-5">
+        <button type="submit" style="transition: .5s ease-in-out;" onclick="getCurriculum()" class="CurriculumeNav buttonNoBG text-white p-1 px-2 d-flex justify-content-between rounded-2 align-items-center fs-5">
             Curriculum<i class="fa-solid fa-caret-down ms-1" id="iLeft"></i>
         </button>
         <ul style="display: none;" id="Curriculum" class="hrNavs flex-column p-0 m-0">
@@ -104,7 +104,7 @@ $student_info = $info['student_info']; ?>
             <a class="text-white p-2" href="semester.php"><p class="m-0"><i class="fa-solid fa-calendar me-2"></i>Academic Year</p></a>
             <a class="text-white p-2" href="yearSection.php"><p class="m-0"><i class="fa-solid fa-building-flag me-2"></i>Year and Section</p></a>
         </ul>
-         <button type="submit" onclick="getEval()" class="EvalNav buttonNoBG mt-1 text-white p-1 px-2 d-flex justify-content-between rounded-2 align-items-center fs-5">
+         <button type="submit" style="transition: .5s ease-in-out;" onclick="getEval()" class="EvalNav buttonNoBG mt-1 text-white p-1 px-2 d-flex justify-content-between rounded-2 align-items-center fs-5">
             Evaluation<i class="fa-solid fa-caret-down ms-1" id="iLeft"></i>
         </button>
         <ul style="display: none;" id="Eval" class="hrNavs flex-column p-0 m-0">

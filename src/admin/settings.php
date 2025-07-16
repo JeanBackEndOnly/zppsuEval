@@ -25,7 +25,7 @@
                 <div class="col-md-5 col-11 p-0 m-0 shadow rounded-2 p-3 ms-2 bg-linear">
                     <label class="ms-2 fw-bold fs-5 text-white mb-3">Change password here</label>
                     <form action="../../auth/authentications.php" method="post" class="w-100 d-flex flex-column px-2">
-                        <input type="hidden" name="passwordChange" value="users">
+                        <input type="hidden" name="adminPasswordChange" value="users">
                         <div class="my-2">
                             <label for="" class="ms-2 fw-bold text-white">Current Password</label>
                             <input type="password" name="current_password" class="form-control">

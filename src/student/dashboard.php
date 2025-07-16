@@ -46,7 +46,9 @@
                         FROM professor
                         INNER JOIN grade ON professor.id = grade.professor_id
                         INNER JOIN department ON professor.department_id  = department.id
-                        WHERE grade.evaluator_id = :evaluator_id";
+                        INNER JOIN professor_school_year_semester ON professor.id = professor_school_year_semester.professor_id
+                        INNER JOIN school_year_semester ON professor_school_year_semester.school_year_semester_id = school_year_semester.id
+                        WHERE grade.evaluator_id = :evaluator_id AND school_year_semester.status = 'open'";
                 $stmt = $pdo->prepare($query);
                 $stmt->bindParam(':evaluator_id', $_SESSION["user_id"]);
                 $stmt->execute();
