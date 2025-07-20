@@ -322,7 +322,7 @@ function getProfProfile(){
     $pdo = db_connect();
     $teacherID = $_GET["id"] ?? '';
     $query = "SELECT * FROM professor 
-    INNER JOIN professor_school_year_semester ON professor.id = professor_school_year_semester.professor_id 
+    -- INNER JOIN professor_school_year_semester ON professor.id = professor_school_year_semester.professor_id 
     INNER JOIN department ON professor.department_id  = department.id
     WHERE teacherID = :teacherID";
     $stmt = $pdo->prepare($query);

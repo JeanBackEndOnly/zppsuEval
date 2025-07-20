@@ -12,12 +12,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $professor_id = $_POST['professor_id'];
         $sysem_id     = $_POST['school_year_semester_id'];
 
+        $query = "UPDATE professor SET evalStatus = 'assigned' WHERE id = :id;";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':id', $professor_id);
+        $stmt->execute();
+
         $exists = $pdo->prepare(
                     "SELECT COUNT(*) FROM professor_school_year_semester
                      WHERE professor_id = ? AND school_year_semester_id = ?"
                   );
         $exists->execute([$professor_id, $sysem_id]);
-
+            
         if (!$exists->fetchColumn()) {
             $ok = $pdo->prepare(
                      "INSERT INTO professor_school_year_semester
@@ -36,6 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {
         $professor_id = $_POST['professor_id'];
         $sysem_id     = $_POST['school_year_semester_id'];
+
+        $query = "UPDATE professor SET evalStatus = 'unassigned' WHERE id = :id;";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':id', $professor_id);
+        $stmt->execute();
 
         $ok = $pdo->prepare(
                  "DELETE FROM professor_school_year_semester
