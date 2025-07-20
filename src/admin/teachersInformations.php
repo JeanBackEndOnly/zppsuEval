@@ -86,12 +86,21 @@
                         $stmt->execute();
                         $recentEvals = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+                        $dateStringNotYEar = isset($recentEvals["assigned_at"])
+                            ? "Assigned at " . date('F-d-Y', strtotime($recentEvals["assigned_at"]))
+                            : "Not Assigned";
+
                     ?>
                     <?php if($recentEvals !== '') { ?>
                         <?php foreach($recentEvals as $hehe) : ?>
+                             <h5 class="fw-bold mb-1">
+                                Academic Year: <?php echo isset($hehe["school_year"]) ? $hehe["school_year"] . " " . $hehe["semester"] . " Semester" : "No Available Semester" ?>
+                            </h5>
+                            <strong>Evaluation Status:</strong> <span class="text-muted fw-bold">Assigned at <?= date('F-d-Y', strtotime($hehe["assigned_at"]))?></span>
                             <div class="">
                                 <?php echo $hehe["school_year"] ?? 'WALA MAN NAG LABAS KAHIT ISA YAWA NA' ?>
                             </div>
+                             <a href="facultyGrading.php?facultyID=<?= htmlspecialchars($profID) ?>" class="btn btn-success col-md-3 m-1">View grade</a>
                         <?php endforeach; ?>
                     <?php }else{ ?>
                         <h1>yawa</h1>
